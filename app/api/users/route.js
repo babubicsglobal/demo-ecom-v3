@@ -14,7 +14,7 @@ export async function POST(request) {
   const res = await request.json();
   console.log(res, "res");
   const validateUsers = await bigCommerce.post(
-    "customers/validate-credentials",
+    "/customers/validate-credentials",
     res
   );
 
