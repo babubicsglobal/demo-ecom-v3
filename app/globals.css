@@ -15,7 +15,11 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
-
+.logo {
+  background-color: #5b82bd;
+  border-end-end-radius: 39%;
+  border-start-start-radius: 39%;
+}
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
