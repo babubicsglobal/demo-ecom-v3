@@ -4,26 +4,25 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 function Login() {
   const [commerceData, setCommerceData] = useState([]);
-
-  const user = {
-    email: "babunov1992@gmail.com",
-    password: "Global@321",
-    channel_id: 1,
-  };
-
-  //   const getBigcomProducts = async () => {
-  //     const result = await axios.post("api/users", user);
-  //     console.log("bigcommerce products", result);
-  //     setCommerceData(result.data.data);
-  //   };
-
-  const onSubmit = async () => {
+  const router = useRouter();
+  const onSubmit = async (data) => {
+    // console.log("data",data);
+    const email = data.username;
+    const password = data.password;
+    const user = { email, password, channel_id: 1 };
+    // console.log("user data",user);
     const result = await axios.post("api/users", user);
-    console.log("bigcommerce products", result.data);
-    //setCommerceData(result.data.data);
+    if (result.data.is_valid === true) {
+      console.log("Success");
+      router.push("/");
+    } else {
+      console.log("Failier");
+    }
+    console.log("User Validation Response ", result.data.is_valid);
   };
 
   const {

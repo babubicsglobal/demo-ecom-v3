@@ -6,41 +6,46 @@ import Link from "next/link";
 import axios from "axios";
 
 const Register = () => {
-  const user = {
-    email: "vijaykanth@gmail.com",
-    first_name: "string",
-    last_name: "string",
-    company: "string",
-    phone: "string",
-    notes: "string",
-    tax_exempt_category: "string",
-    customer_group_id: 0,
-    addresses: [
-      {
-        address1: "Addr 1",
-        address2: "",
-        address_type: "residential",
-        city: "San Francisco",
-        company: "History",
-        country_code: "US",
-        first_name: "Ronald",
-        last_name: "Swimmer",
-        phone: "707070707",
-        postal_code: "33333",
-        state_or_province: "California",
-        form_fields: [{ name: "test", value: "test" }],
+  const RegisterUser = [
+    {
+      email: "vijaykanth@gmail.com",
+      first_name: "vijay",
+      last_name: "kanth",
+      company: "biz",
+      phone: "",
+      notes: "",
+      tax_exempt_category: "",
+      customer_group_id: 0,
+      addresses: [
+        {
+          address1: "chennai",
+          address2: "velachry",
+          address_type: "residential",
+          city: "San Francisco",
+          company: "History",
+          country_code: "US",
+          first_name: "Ronald",
+          last_name: "Swimmer",
+          phone: "707070707",
+          postal_code: "33333",
+          state_or_province: "California",
+          form_fields: [{ name: "test", value: "test" }],
+        },
+      ],
+      authentication: {
+        force_password_reset: true,
+        new_password: "Global@123",
       },
-    ],
-    authentication: { force_password_reset: true, new_password: "string123" },
-    accepts_product_review_abandoned_cart_emails: true,
-    store_credit_amounts: [{ amount: 43.15 }],
-    origin_channel_id: 1,
-    channel_ids: [1],
-    form_fields: [{ name: "test", value: "test" }],
-  };
+      accepts_product_review_abandoned_cart_emails: true,
+      store_credit_amounts: [{ amount: 43.15 }],
+      origin_channel_id: 1,
+      channel_ids: [1],
+      form_fields: [{ name: "test", value: "test" }],
+    },
+  ];
 
   const onSubmit = async () => {
-    const result = await axios.post("api/register", user);
+    const result = await axios.post("api/register", RegisterUser);
     console.log("result", result.data);
     //setCommerceData(result.data.data);
   };
@@ -247,13 +252,29 @@ const Register = () => {
                     className="block text-grey-darker text-sm mb-2"
                     htmlFor="FormField_12_input"
                   >
-                    Suburb/City
+                    State/Province
                   </label>
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_12_input"
                     type="text"
-                    placeholder="City"
+                    placeholder="State/Province"
+                  />
+                </div>
+              </div>
+              <div className="flex mb-4">
+                <div className="w-1/2 ml-1">
+                  <label
+                    className="block text-grey-darker text-sm mb-2"
+                    htmlFor="FormField_13_input"
+                  >
+                    Postal Code
+                  </label>
+                  <input
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    id="FormField_13_input"
+                    type="text"
+                    placeholder="Postal Code"
                   />
                 </div>
               </div>
