@@ -6,47 +6,55 @@ import Link from "next/link";
 import axios from "axios";
 
 const Register = () => {
-  const RegisterUser = [
-    {
-      email: "vijaykanth@gmail.com",
-      first_name: "vijay",
-      last_name: "kanth",
-      company: "biz",
-      phone: "",
-      notes: "",
-      tax_exempt_category: "",
-      customer_group_id: 0,
-      addresses: [
-        {
-          address1: "chennai",
-          address2: "velachry",
-          address_type: "residential",
-          city: "San Francisco",
-          company: "History",
-          country_code: "US",
-          first_name: "Ronald",
-          last_name: "Swimmer",
-          phone: "707070707",
-          postal_code: "33333",
-          state_or_province: "California",
-          form_fields: [{ name: "test", value: "test" }],
+  
+  const onSubmit = async (data) => {
+    console.log("request.email.data",data.emailaddress);
+    const RegisterUser = [
+      {
+        email: data.emailaddress,
+        first_name: data.firstname,
+        last_name: data.lastname,
+        company: data.companyname,
+        phone: data.phonenumber,
+        notes: "",
+        tax_exempt_category: "",
+        customer_group_id: 0,
+        addresses: [
+          {
+            address1: data.address1,
+            address2: data.address2,
+            address_type: "residential",
+            city: data.city,
+            company: data.companyname,
+            country_code: "US",
+            first_name: data.firstname,
+            last_name: data.lastname,
+            phone: data.phonenumber,
+            postal_code: data.postalcode,
+            state_or_province: data.state,
+            form_fields: [{ name: "test", value: "test" }],
+          },
+        ],
+        authentication: {
+          force_password_reset: true,
+          new_password: data.password,
         },
-      ],
-      authentication: {
-        force_password_reset: true,
-        new_password: "Global@123",
+        accepts_product_review_abandoned_cart_emails: true,
+        store_credit_amounts: [{ amount: 43.15 }],
+        origin_channel_id: 1,
+        channel_ids: [1],
+        form_fields: [{ name: "test", value: "test" }],
       },
-      accepts_product_review_abandoned_cart_emails: true,
-      store_credit_amounts: [{ amount: 43.15 }],
-      origin_channel_id: 1,
-      channel_ids: [1],
-      form_fields: [{ name: "test", value: "test" }],
-    },
-  ];
+    ];
 
-  const onSubmit = async () => {
     const result = await axios.post("api/register", RegisterUser);
     console.log("result", result.data);
+    // if (result.data.id > 0) {
+    //   console.log("Success");
+    //   router.push("/login");
+    // } else {
+    //   console.log("Failier");
+    // }
     //setCommerceData(result.data.data);
   };
 
@@ -93,6 +101,7 @@ const Register = () => {
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_1_input"
+                    {...register("emailaddress")}
                     type="text"
                     placeholder="Email Address"
                   />
@@ -108,6 +117,7 @@ const Register = () => {
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_2_input"
                     type="password"
+                    {...register("password")}
                     placeholder="Password"
                   />
                 </div>
@@ -123,6 +133,7 @@ const Register = () => {
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_3_input"
+                    {...register("confirmpassword")}
                     type="text"
                     placeholder="Confirm Password"
                   />
@@ -137,6 +148,7 @@ const Register = () => {
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_2_input"
+                    {...register("firstname")}
                     type="text"
                     placeholder="First Name"
                   />
@@ -153,6 +165,7 @@ const Register = () => {
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_5_input"
+                    {...register("lastname")}
                     type="text"
                     placeholder="Last Name"
                   />
@@ -167,6 +180,7 @@ const Register = () => {
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_6_input"
+                    {...register("companyname")}
                     type="text"
                     placeholder="Company Name"
                   />
@@ -183,6 +197,7 @@ const Register = () => {
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_7_input"
+                    {...register("phonenumber")}
                     type="text"
                     placeholder="Phone Number"
                   />
@@ -197,6 +212,7 @@ const Register = () => {
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_8_input"
+                    {...register("address1")}
                     type="text"
                     placeholder="Address Line"
                   />
@@ -213,6 +229,7 @@ const Register = () => {
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_9_input"
+                    {...register("address2")}
                     type="text"
                     placeholder="Address Line"
                   />
@@ -227,6 +244,7 @@ const Register = () => {
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_10_input"
+                    {...register("city")}
                     type="text"
                     placeholder="City"
                   />
@@ -243,6 +261,7 @@ const Register = () => {
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_11_input"
+                    {...register("country")}
                     type="text"
                     placeholder="Country"
                   />
@@ -257,6 +276,7 @@ const Register = () => {
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_12_input"
+                    {...register("state")}
                     type="text"
                     placeholder="State/Province"
                   />
@@ -273,6 +293,7 @@ const Register = () => {
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_13_input"
+                    {...register("postalcode")}
                     type="text"
                     placeholder="Postal Code"
                   />
