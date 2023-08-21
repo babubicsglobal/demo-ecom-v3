@@ -22,7 +22,7 @@ function Login() {
 
   const onSubmit = async () => {
     const result = await axios.post("api/users", user);
-    console.log("bigcommerce products", result);
+    console.log("bigcommerce products", result.data);
     //setCommerceData(result.data.data);
   };
 
@@ -61,7 +61,7 @@ function Login() {
               className="space-y-4 md:space-y-6"
               action="#"
               onSubmit={handleSubmit(onSubmit)}
-              autocomplete="off"
+              autoComplete="off"
             >
               <div>
                 <label

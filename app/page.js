@@ -1,12 +1,12 @@
 import Image from "next/image";
-import Login from "./login/page";
+
+import HomePage from "./Home/page";
 
 export default function Home() {
   return (
     <main className="home">
       <div>
-        {" "}
-        <Login></Login>
+        <HomePage></HomePage>
       </div>
     </main>
   );
