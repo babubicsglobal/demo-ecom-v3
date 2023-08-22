@@ -25,3 +25,18 @@
 body {
   color: rgb(var(--foreground-rgb));
 }
+
+.invalid-feedback {
+  color: red;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.require-star {
+  color: red;
+  font-size: 14px;
+  margin-left: 1px;
+  display: inline-block;
+  position: relative;
+  top: -3px;
+}

@@ -4,16 +4,22 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
 const Register = () => {
-  
+  const router = useRouter();
+
+  const [isError, setIsError] = useState(null);
+
   const onSubmit = async (data) => {
-    console.log("request.email.data",data.emailaddress);
+    console.log("request.email.data", data);
     const RegisterUser = [
       {
-        email: data.emailaddress,
-        first_name: data.firstname,
-        last_name: data.lastname,
+        email: data.email,
+        first_name: data.first_name,
+        last_name: data.last_name,
         company: data.companyname,
         phone: data.phonenumber,
         notes: "",
@@ -27,11 +33,11 @@ const Register = () => {
             city: data.city,
             company: data.companyname,
             country_code: "US",
-            first_name: data.firstname,
-            last_name: data.lastname,
+            first_name: data.first_name,
+            last_name: data.last_name,
             phone: data.phonenumber,
-            postal_code: data.postalcode,
-            state_or_province: data.state,
+            postal_code: data.postal_code,
+            state_or_province: data.state_or_province,
             form_fields: [{ name: "test", value: "test" }],
           },
         ],
@@ -47,23 +53,59 @@ const Register = () => {
       },
     ];
 
-    const result = await axios.post("api/register", RegisterUser);
-    console.log("result", result.data);
+    const result = await axios
+      .post("api/register", RegisterUser)
+      .then(function (response) {
+        router.push("/login");
+        console.log("Success");
+        console.log("response", response.data);
+        setIsError(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+        setIsError(true);
+      });
+    // console.log("result", result.data);
     // if (result.data.id > 0) {
     //   console.log("Success");
-    //   router.push("/login");
+
     // } else {
     //   console.log("Failier");
     // }
     //setCommerceData(result.data.data);
   };
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  useEffect(() => {
+    //Runs only on the first render
+  }, []);
 
+  // form validation rules
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().required("Email address is required"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(4, "Password length should be at least 4 characters")
+      .max(12, "Password cannot exceed more than 12 characters"),
+    cpassword: Yup.string()
+      .required("Confirm Password is required")
+      .min(4, "Password length should be at least 4 characters")
+      .max(12, "Password cannot exceed more than 12 characters")
+      .oneOf([Yup.ref("password")], "Passwords do not match"),
+    first_name: Yup.string().required("first name is required"),
+    last_name: Yup.string().required("last name is required"),
+    address1: Yup.string().required("address is required"),
+    city: Yup.string().required("city is required"),
+    state_or_province: Yup.string().required("State/Province is required"),
+    postal_code: Yup.string().required("Postal code is required"),
+    country_code: Yup.string().required("Country is required"),
+  });
+  const formOptions = { resolver: yupResolver(validationSchema) };
+
+  const { register, handleSubmit, watch, formState, reset, getValues } =
+    useForm(formOptions);
+  const { errors } = formState;
+
+  console.log("errors", errors);
   return (
     <div className="w-full bg-gray-50 dark:bg-gray-900 md:h-screen">
       <div className="container mx-auto py-8">
@@ -96,22 +138,25 @@ const Register = () => {
                     className="block text-grey-darker text-sm mb-2"
                     htmlFor="FormField_1_input"
                   >
-                    Email Address
+                    Email Address<span className="require-star">*</span>
                   </label>
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_1_input"
-                    {...register("emailaddress")}
+                    {...register("email")}
                     type="text"
                     placeholder="Email Address"
                   />
+                  <div className="invalid-feedback">
+                    {errors.email?.message}
+                  </div>
                 </div>
                 <div className="w-1/2 ml-1">
                   <label
                     className="block text-grey-darker text-sm mb-2"
                     htmlFor="FormField_2_input"
                   >
-                    Password
+                    Password<span className="require-star">*</span>
                   </label>
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -120,6 +165,9 @@ const Register = () => {
                     {...register("password")}
                     placeholder="Password"
                   />
+                  <div className="invalid-feedback">
+                    {errors.password?.message}
+                  </div>
                 </div>
               </div>
               <div className="flex mb-4">
@@ -128,30 +176,36 @@ const Register = () => {
                     className="block text-grey-darker text-sm mb-2"
                     htmlFor="FormField_3_input"
                   >
-                    Confirm Password
+                    Confirm Password<span className="require-star">*</span>
                   </label>
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_3_input"
-                    {...register("confirmpassword")}
+                    {...register("cpassword")}
                     type="text"
                     placeholder="Confirm Password"
                   />
+                  <div className="invalid-feedback">
+                    {errors.cpassword?.message}
+                  </div>
                 </div>
                 <div className="w-1/2 ml-1">
                   <label
                     className="block text-grey-darker text-sm mb-2"
                     htmlFor="FormField_4_input"
                   >
-                    First Name
+                    First Name<span className="require-star">*</span>
                   </label>
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="FormField_2_input"
-                    {...register("firstname")}
+                    id="FormField_4_input"
+                    {...register("first_name")}
                     type="text"
                     placeholder="First Name"
                   />
+                  <div className="invalid-feedback">
+                    {errors.first_name?.message}
+                  </div>
                 </div>
               </div>
               <div className="flex mb-4">
@@ -160,15 +214,18 @@ const Register = () => {
                     className="block text-grey-darker text-sm mb-2"
                     htmlFor="FormField_5_input"
                   >
-                    Last Name
+                    Last Name<span className="require-star">*</span>
                   </label>
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_5_input"
-                    {...register("lastname")}
+                    {...register("last_name")}
                     type="text"
                     placeholder="Last Name"
                   />
+                  <div className="invalid-feedback">
+                    {errors.last_name?.message}
+                  </div>
                 </div>
                 <div className="w-1/2 ml-1">
                   <label
@@ -207,7 +264,7 @@ const Register = () => {
                     className="block text-grey-darker text-sm mb-2"
                     htmlFor="FormField_8_input"
                   >
-                    Address Line 1
+                    Address Line 1<span className="require-star">*</span>
                   </label>
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -216,6 +273,9 @@ const Register = () => {
                     type="text"
                     placeholder="Address Line"
                   />
+                  <div className="invalid-feedback">
+                    {errors.address1?.message}
+                  </div>
                 </div>
               </div>
               <div className="flex mb-4">
@@ -239,7 +299,7 @@ const Register = () => {
                     className="block text-grey-darker text-sm mb-2"
                     htmlFor="FormField_10_input"
                   >
-                    Suburb/City
+                    Suburb/City<span className="require-star">*</span>
                   </label>
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -248,6 +308,7 @@ const Register = () => {
                     type="text"
                     placeholder="City"
                   />
+                  <div className="invalid-feedback">{errors.city?.message}</div>
                 </div>
               </div>
               <div className="flex mb-4">
@@ -256,30 +317,36 @@ const Register = () => {
                     className="block text-grey-darker text-sm mb-2"
                     htmlFor="FormField_11_input"
                   >
-                    Country
+                    Country<span className="require-star">*</span>
                   </label>
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_11_input"
-                    {...register("country")}
+                    {...register("country_code")}
                     type="text"
                     placeholder="Country"
                   />
+                  <div className="invalid-feedback">
+                    {errors.country_code?.message}
+                  </div>
                 </div>
                 <div className="w-1/2 ml-1">
                   <label
                     className="block text-grey-darker text-sm mb-2"
                     htmlFor="FormField_12_input"
                   >
-                    State/Province
+                    State/Province<span className="require-star">*</span>
                   </label>
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_12_input"
-                    {...register("state")}
+                    {...register("state_or_province")}
                     type="text"
                     placeholder="State/Province"
                   />
+                  <div className="invalid-feedback">
+                    {errors.state_or_province?.message}
+                  </div>
                 </div>
               </div>
               <div className="flex mb-4">
@@ -288,15 +355,18 @@ const Register = () => {
                     className="block text-grey-darker text-sm mb-2"
                     htmlFor="FormField_13_input"
                   >
-                    Postal Code
+                    Postal Code<span className="require-star">*</span>
                   </label>
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     id="FormField_13_input"
-                    {...register("postalcode")}
+                    {...register("postal_code")}
                     type="text"
                     placeholder="Postal Code"
                   />
+                  <div className="invalid-feedback">
+                    {errors.postal_code?.message}
+                  </div>
                 </div>
               </div>
               <div className="flex mb-4">
