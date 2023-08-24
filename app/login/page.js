@@ -15,7 +15,7 @@ function Login() {
   // form validation rules
 
   //const EMAIL_REGX = `^(([^<>()\[\]\\.,;:\s@"]+(.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/`;
-  const Valid_REGX = commerceData.is_valid === false;
+  // const Valid_REGX = commerceData.is_valid === false;
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -26,7 +26,7 @@ function Login() {
 
   const formOptions = { resolver: yupResolver(validationSchema) };
 
-  const { register, handleSubmit, formState } = useForm(formOptions);
+  const { register, handleSubmit, formState, reset } = useForm(formOptions);
   const { errors } = formState;
 
   const onSubmit = async (data) => {
@@ -38,12 +38,13 @@ function Login() {
     const result = await axios.post("api/users", user);
     if (result.data.is_valid === true) {
       console.log("Success");
-      router.push("/");
+      router.push("/Home");
     } else {
       console.log("Failier");
     }
     setCommerceData(result.data);
     console.log("User Validation Response ", result.data.is_valid);
+    reset();
   };
 
   //   const onSubmit = (data) => console.log(data);

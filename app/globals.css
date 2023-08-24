@@ -40,3 +40,8 @@ body {
   position: relative;
   top: -3px;
 }
+
+/* .gradient-box {
+  background: rgb(209, 199, 209);
+  background: radial-gradient(circle, rgba(209, 199, 209, 1) 5%, rgba(240, 198, 235, 1) 53%, rgba(188, 194, 249, 1) 100%);
+} */
