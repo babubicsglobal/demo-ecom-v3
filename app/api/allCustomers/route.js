@@ -13,9 +13,7 @@ export async function GET(request) {
   // console.log(request, "req value");
   // const res = await request.json();
   // console.log(res, "res");
-  const products = await bigCommerce.get(
-    "/catalog/products?include=images,variants"
-  );
+  const customers = await bigCommerce.get("/customers");
 
-  return NextResponse.json(products);
+  return NextResponse.json(customers);
 }

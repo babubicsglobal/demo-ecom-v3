@@ -43,14 +43,19 @@ function Login() {
       console.log("Failier");
     }
     setCommerceData(result.data);
+    sessionStorage.setItem("customer_Number", result.data.customer_id);
     console.log("User Validation Response ", result.data.is_valid);
     reset();
   };
 
   //   const onSubmit = (data) => console.log(data);
-
+  // const customerValue = commerceData?.customer_id;
   useEffect(() => {
     // getBigcomProducts();
+    // if (typeof window !== "undefined") {
+    //   // set props data to session storage or local storage
+    //   sessionStorage.setItem("customer_Number", customerValue);
+    // }
   }, []);
   console.log("bigcommerce user data", commerceData);
 

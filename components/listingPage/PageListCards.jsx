@@ -22,7 +22,7 @@ const PageListCards = ({ bigCommerceData }) => {
                 key={index}
               >
                 <article className="overflow-hidden rounded-lg shadow-lg card-list">
-                  <Link href="">
+                  <Link href={`product/${item?.commerceItem?.custom_url?.url}`}>
                     <img
                       alt="Placeholder"
                       className="block h-72 w-full object-contain"

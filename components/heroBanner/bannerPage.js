@@ -28,7 +28,7 @@ const BannerPage = () => {
   console.log("ProductImage", ProductImage);
 
   return (
-    <section className="w-full h-screen gradient-box">
+    <section className="w-full h-screen gradient-box overflow-hidden">
       <div className="flex h-full items-center">
         <div className="w-2/5">
           <img src={ProductImage} className="" alt="Image alt text" />

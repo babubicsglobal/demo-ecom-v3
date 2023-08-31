@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import BigCommerce from "node-bigcommerce";
 
-export async function GET(request) {
+export async function POST(request) {
   const bigCommerce = new BigCommerce({
     clientId: "c09o8ry9m5rne0da8fbh6u2e26vw7wd",
     storeHash: "uixivqsc47",
@@ -10,12 +10,10 @@ export async function GET(request) {
     headers: { "Accept-Encoding": "*" }, // Override headers (Overriding the default encoding of GZipped is useful in development)
     apiVersion: "v3",
   });
-  // console.log(request, "req value");
-  // const res = await request.json();
-  // console.log(res, "res");
-  const products = await bigCommerce.get(
-    "/catalog/products?include=images,variants"
-  );
+  console.log(request, "req value");
+  const res = await request.json();
+  console.log(res, "carts");
+  const CreateCart = await bigCommerce.post("/carts", res);
 
-  return NextResponse.json(products);
+  return NextResponse.json(CreateCart);
 }

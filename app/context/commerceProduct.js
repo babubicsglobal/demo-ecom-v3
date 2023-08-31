@@ -3,7 +3,6 @@ import React from "react";
 import { useEffect } from "react";
 import { createContext, useState } from "react";
 import { client } from "./../../lib/contentful/client";
-import BannerPage from "./../../components/heroBanner/bannerPage";
 import axios from "axios";
 
 export const CounterContext = createContext();
