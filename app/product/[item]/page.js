@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { CustomerAPI } from "./../../api/customer/getCustomerAPI";
+import { Linden_Hill } from "next/font/google";
 
 function ProductDetailpage({ params }) {
   console.log("params", params);
@@ -13,7 +14,7 @@ function ProductDetailpage({ params }) {
   const [productList, setproductList] = useState([]);
   const [sessionItem, setsessionItem] = useState("");
   const [productDetail, setproductDetail] = useState([]);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
 
   //   const getProductItemKey = async () => {
   //     setproductItem(cfulFilterData);
@@ -51,46 +52,78 @@ function ProductDetailpage({ params }) {
   };
 
   const handleSubmit = async () => {
-    //console.log(data);
-    const CreateCart = {
-      customer_id: sessionItem,
-      line_items: [
-        {
-          quantity: count,
-          product_id: productList[0]?.id,
-          variant_id: productList[0]?.variants[0]?.id,
-          list_price: 5,
-          name: productList[0]?.name,
-          option_selections: [
-            {
-              option_id: productList[0]?.variants[0]?.option_values[0]?.id,
-              option_value:
-                productList[0]?.variants[0]?.option_values[0]?.option_id,
-              name: productList[0]?.variants[0]?.option_values[0]
-                ?.option_display_name,
-              value: productList[0]?.variants[0]?.option_values[0]?.label,
-            },
-          ],
-        },
-      ],
-      channel_id: 1,
-      currency: {
-        code: "INR",
+    const cartId = sessionStorage.getItem("cart_id");
+    console.log("stored cart id", cartId);
+
+    const line_items = [
+      {
+        quantity: count,
+        product_id: productList[0]?.id,
+        variant_id: productList[0]?.variants[0]?.id,
+        list_price: 5,
+        name: productList[0]?.name,
+        option_selections: [
+          {
+            option_id: productList[0]?.variants[0]?.option_values[0]?.id,
+            option_value:
+              productList[0]?.variants[0]?.option_values[0]?.option_id,
+            name: productList[0]?.variants[0]?.option_values[0]
+              ?.option_display_name,
+            value: productList[0]?.variants[0]?.option_values[0]?.label,
+          },
+        ],
       },
-      locale: "en-US",
-    };
-    const result = await axios
-      .post("../api/cart", CreateCart)
-      .then(function (response) {
-        router.push("/cart");
-        console.log("Success");
-        console.log("cart", response.data);
-        //setIsError(false);
-      })
-      .catch(function (error) {
-        console.log(error);
-        //setIsError(true);
-      });
+    ];
+
+    if (cartId === null) {
+      console.log("create cart");
+      const CreateCart = {
+        customer_id: sessionItem,
+        line_items: line_items,
+        channel_id: 1,
+        currency: {
+          code: "INR",
+        },
+        locale: "en-US",
+      };
+      const result = await axios
+        .post("../api/cart", CreateCart)
+        .then(function (response) {
+          console.log("Success");
+          console.log("cart id", response.data);
+          sessionStorage.setItem("cart_id", response.data.data.id);
+          router.push(`/cartDetail?cartId=${response.data.data.id}`);
+          //setIsError(false);
+        })
+        .catch(function (error) {
+          console.log(error);
+          //setIsError(true);
+        });
+    } else {
+      console.log("update cart");
+      const UpdateCart = {
+        cartId: cartId,
+        line_items: line_items,
+        channel_id: 1,
+        currency: {
+          code: "INR",
+        },
+        locale: "en-US",
+      };
+      const result = await axios
+        .post("../api/updateCartItem", UpdateCart)
+        .then(function (response) {
+          console.log("Success");
+          console.log("cart id", response.data);
+          sessionStorage.setItem("cart_id", response.data.data.id);
+          router.push(`/cartDetail?cartId=${response.data.data.id}`);
+          //setIsError(false);
+        })
+        .catch(function (error) {
+          console.log(error);
+          //setIsError(true);
+        });
+    }
   };
 
   useEffect(() => {

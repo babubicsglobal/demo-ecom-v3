@@ -12,11 +12,8 @@ export async function POST(request) {
   });
   console.log(request, "req value");
   const res = await request.json();
-  console.log(res, "carts");
-  const CreateCart = await bigCommerce.post(
-    "/carts?include=redirect_urls",
-    res
-  );
+  console.log(res.id, "carts");
+  const getCartData = await bigCommerce.get(`/carts/${res.id}`);
 
-  return NextResponse.json(CreateCart);
+  return NextResponse.json(getCartData);
 }
