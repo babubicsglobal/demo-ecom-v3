@@ -4,30 +4,80 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import OrderSuccessModal from "../../components/orderSuccessModal/OrderSuccessModal";
-
+import axios from "axios";
 const OrderSummaryList = ({ cartListData , customer_id, customerDetails }) => {
     const router = useRouter();
   const rupeesSymbol = "₹";
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [customerId, setCustomerId] = useState("");
 
-  const handleOrder = () => {
-    // Perform your order logic here
-    // When the order is successful, set isModalOpen to true
-    setIsModalOpen(true);
-  };
+  useEffect(() => {
+    calculateOrderSummary();
+   let customerId = sessionStorage.getItem("customer_Number");
+   setCustomerId(customerId);
+  }, [cartListData]);
+
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     router.push('/Home');
   };
 
+  const handlePlaceOrder = async () => {
 
+    var productsData = [];
+
+ 
+
+    for (let i = 0; i<cartListData.length ; i++){
+      let product =  {
+        product_id: cartListData[i]?.id,
+        quantity: cartListData[i]?.quantity,
+        variant_id: cartListData[i]?.variant_id,
+      };
+      console.log("product",product);
+      productsData.push(product);
+    }
+
+  
+
+    const billingAddress =  {
+      "first_name": "Preethi",
+      "last_name": "G",
+      "street_1": "Main Street",
+      "city": "Austin",
+      "state": "Texas",
+      "zip": "78751",
+      "country": "United States",
+      "country_iso2": "US",
+      "email": "janedoe@email.com"
+    };
+
+   
+    const CreateOrder = {
+      customer_id: customerId,
+      products: productsData,
+      billing_address: billingAddress,
+    };
+
+    console.log("CreateOrder",CreateOrder);
+
+    const result = await axios
+      .post("../api/order", CreateOrder)
+      .then(function (response) {
+        console.log("Response", response.data);
+        sessionStorage.removeItem("cart_id");
+        setIsModalOpen(true);
+      })
+      .catch(function (error) {
+        console.log(error);
+        //setIsError(true);
+      });
+  };
 
   console.log("cartListData", cartListData);
 
-  useEffect(() => {
-    calculateOrderSummary();
-  }, [cartListData]);
+ 
 
   const calculateOrderSummary = () => {
     const subtotal = cartListData.reduce(
@@ -51,14 +101,20 @@ const OrderSummaryList = ({ cartListData , customer_id, customerDetails }) => {
         Order Summary
       </h2>
       <div class="border-t border-gray-300 my-4"></div>
-
-      <h2 className="text-sm text-gray-600 py-2 text-left">
+      <li class="flex items-center justify-between py-2">
+          <div class="text-left">
+          <h2 className="text-sm text-gray-600 py-2 text-left">
         {cartListData.length} Item(s)
       </h2>
+          </div>
+          <div class="text-right">
+          <button className="text-blue-500 hover:underline"  onClick={() => router.back()}>Edit Cart</button>
+          </div>
+        </li>
       <ul>
         {cartListData.map((item, index) => (
           <li key={index} className="flex items-left justify-between mb-2">
-            <div className="flex items-left">
+            <div className="flex items-center">
               <div className="ml-4">
                 <img
                   src={item?.image_url}
@@ -123,7 +179,7 @@ const OrderSummaryList = ({ cartListData , customer_id, customerDetails }) => {
         {" "}
         <button
           class="bg-blue-500 text-white rounded-full mt-4 py-2 px-6 hover:bg-blue-600 text-center"
-          onClick={handleOrder}
+          onClick={handlePlaceOrder}
         >
           Place Order
         </button>{" "}

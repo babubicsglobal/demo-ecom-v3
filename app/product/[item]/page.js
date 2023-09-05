@@ -60,7 +60,7 @@ function ProductDetailpage({ params }) {
         quantity: count,
         product_id: productList[0]?.id,
         variant_id: productList[0]?.variants[0]?.id,
-        list_price: 5,
+        list_price: productList[0]?.price,
         name: productList[0]?.name,
         option_selections: [
           {
@@ -113,7 +113,7 @@ function ProductDetailpage({ params }) {
         locale: "en-US",
       };
       const result = await axios
-        .post("../api/updateCartItem", UpdateCart)
+        .post("../api/updateCart", UpdateCart)
         .then(function (response) {
           console.log("Success");
           console.log("cart id", response.data);
@@ -230,7 +230,11 @@ function ProductDetailpage({ params }) {
                 <span className="text-gray-600 ml-3">4 Reviews</span>
               </span>
             </div>
-            <p className="leading-relaxed">{productList[0]?.description}</p>
+            <div
+              className="leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: productList[0]?.description }}
+            ></div>
+
             <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
               <div className="flex ml-6 items-center">
                 <span className="mr-3">Size</span>

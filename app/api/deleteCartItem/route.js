@@ -12,11 +12,9 @@ export async function POST(request) {
   });
   console.log(request, "req value");
   const res = await request.json();
-  console.log(res, "carts");
-  const UpdateItemCart = await bigCommerce.put(
-    `/carts/${res.cartId}/items/${res.itemId}`,
-    res
+  console.log(res.cId, "cartId");
+  const DeleteCartItem = await bigCommerce.delete(
+    `/carts/${res.cId}/items/${res.pId}`
   );
-
-  return NextResponse.json(UpdateItemCart);
+  return NextResponse.json(DeleteCartItem);
 }

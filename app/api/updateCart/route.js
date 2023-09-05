@@ -13,10 +13,7 @@ export async function POST(request) {
   console.log(request, "req value");
   const res = await request.json();
   console.log(res, "carts");
-  const UpdateItemCart = await bigCommerce.put(
-    `/carts/${res.cartId}/items/${res.itemId}`,
-    res
-  );
+  const UpdateCart = await bigCommerce.post(`/carts/${res.cartId}/items`, res);
 
-  return NextResponse.json(UpdateItemCart);
+  return NextResponse.json(UpdateCart);
 }

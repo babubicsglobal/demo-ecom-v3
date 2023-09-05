@@ -8,15 +8,12 @@ export async function POST(request) {
     accessToken: "gge1td9hix9d132o9m5156rbwofi6xz",
     responseType: "json",
     headers: { "Accept-Encoding": "*" }, // Override headers (Overriding the default encoding of GZipped is useful in development)
-    apiVersion: "v3",
+    apiVersion: "v2",
   });
   console.log(request, "req value");
   const res = await request.json();
   console.log(res, "carts");
-  const UpdateItemCart = await bigCommerce.put(
-    `/carts/${res.cartId}/items/${res.itemId}`,
-    res
-  );
+  const CreateOrder = await bigCommerce.post(`/orders`, res);
 
-  return NextResponse.json(UpdateItemCart);
+  return NextResponse.json(CreateOrder);
 }
