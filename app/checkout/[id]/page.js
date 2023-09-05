@@ -4,23 +4,19 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { Collapse, initTE } from "tw-elements";
+import { CustomerAPI } from "../../api/customer/getCustomerAPI";
+import OrderSummaryCartList from "../../../components/orderSummary/CartList";
 
-import { CustomerAPI } from "./../api/customer/getCustomerAPI";
-
-const CheckoutPage = () => {
-  const router = useRouter();
-
+const CheckoutPage = ({ params }) => {
   const [isError, setIsError] = useState(null);
-
   const [customerData, setCustomerData] = useState([]);
-
   const [getSessionID, setSessionID] = useState("");
-
   const [getCusValue, setCusValue] = useState([]);
+  const [cartItem, setCartItem] = useState([]);
 
   const onSubmit = async (data) => {
     console.log("request.email.data", data);
@@ -122,9 +118,24 @@ const CheckoutPage = () => {
     setCusValue(getCustomerItem);
   };
 
+  const getCartDetails = async () => {
+    const request = {
+      id: params.id,
+    };
+    const result = await axios
+      .post("../api/getCart", request)
+      .then(function (response) {
+        setCartItem(response.data.data.line_items.physical_items);
+      })
+      .catch(function (error) {
+        console.log(error);
+        //setIsError(true);
+      });
+  };
+
   useEffect(() => {
     initTE({ Collapse });
-
+    getCartDetails();
     var config = { "Access-Control-Allow-Origin": "*" };
     CustomerAPI(
       config,
@@ -727,7 +738,9 @@ const CheckoutPage = () => {
               </div>
             </div>
           </div>
-          <div className="col-span-1 px-3 bg-white">02</div>
+          <div className="col-span-1 px-3 bg-white">
+            <OrderSummaryCartList cartListData={cartItem ?? []} />
+          </div>
         </div>
       </div>
     </section>

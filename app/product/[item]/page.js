@@ -92,7 +92,9 @@ function ProductDetailpage({ params }) {
           console.log("Success");
           console.log("cart id", response.data);
           sessionStorage.setItem("cart_id", response.data.data.id);
-          router.push(`/cartDetail?cartId=${response.data.data.id}`);
+
+          const destinationURL = `/cartDetail/${response.data.data.id}`;
+          router.push(destinationURL);
           //setIsError(false);
         })
         .catch(function (error) {
@@ -116,7 +118,8 @@ function ProductDetailpage({ params }) {
           console.log("Success");
           console.log("cart id", response.data);
           sessionStorage.setItem("cart_id", response.data.data.id);
-          router.push(`/cartDetail?cartId=${response.data.data.id}`);
+          const destinationURL = `/cartDetail/${response.data.data.id}`;
+          router.push(destinationURL);
           //setIsError(false);
         })
         .catch(function (error) {
@@ -299,7 +302,7 @@ function ProductDetailpage({ params }) {
                 onClick={handleSubmit}
                 className="flex ml-auto text-white bg-blue-900 border-0 py-2 px-6 rounded"
               >
-                <Link href="#"> Add to Cart</Link>
+                Add to Cart
               </button>
             </div>
           </div>
