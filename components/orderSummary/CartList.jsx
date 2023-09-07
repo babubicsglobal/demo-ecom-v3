@@ -16,7 +16,7 @@ const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    router.push("/Home");
+    router.push("/home");
   };
 
   const handlePlaceOrder = async () => {
@@ -70,7 +70,7 @@ const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
       0
     );
 
-    const shippingCharge = 50;
+    const shippingCharge = 0;
     const total = +subtotal.toFixed(2);
 
     document.getElementById("subtotal").textContent = subtotal.toFixed(2);

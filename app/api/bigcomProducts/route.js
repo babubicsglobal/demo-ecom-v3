@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import BigCommerce from "node-bigcommerce";
-import GlobalConfig from "../../BigComConfig/config";
+import GlobalConfig from "../../GlobalConfig/config";
 export async function GET(request) {
   const bigCommerce = new BigCommerce({
     clientId: GlobalConfig.clientId,

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { CustomerAPI } from "./../../api/customer/getCustomerAPI";
 import { Linden_Hill } from "next/font/google";
+import GlobalConfig from "./../../GlobalConfig/config";
 
 function ProductDetailpage({ params }) {
   console.log("params", params);
@@ -95,9 +96,10 @@ function ProductDetailpage({ params }) {
         .then(function (response) {
           console.log("Success");
           console.log("cart id", response.data);
+          GlobalConfig.cartId = response.data.data.id;
           sessionStorage.setItem("cart_id", response.data.data.id);
 
-          const destinationURL = `/cartDetail/${response.data.data.id}`;
+          const destinationURL = `/cartDetail`;
           router.push(destinationURL);
           //setIsError(false);
         })
@@ -122,8 +124,9 @@ function ProductDetailpage({ params }) {
         .then(function (response) {
           console.log("Success");
           console.log("cart id", response.data);
+          GlobalConfig.cartId = response.data.data.id;
           sessionStorage.setItem("cart_id", response.data.data.id);
-          const destinationURL = `/cartDetail/${response.data.data.id}`;
+          const destinationURL = `/cartDetail`;
           router.push(destinationURL);
           //setIsError(false);
         })

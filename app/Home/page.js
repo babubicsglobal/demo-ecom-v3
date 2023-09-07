@@ -1,7 +1,7 @@
 "use client"; // This is a client component
 import React from "react";
-import ProductsCategoryPage from "./../products/page";
-import BannerPage from "./../../components/heroBanner/bannerPage";
+import ProductsCategoryPage from "../products/page";
+import BannerPage from "../../components/heroBanner/bannerPage";
 import MultiValueContextDemo from "../context/commerceProduct";
 
 function HomePage() {
@@ -10,7 +10,6 @@ function HomePage() {
       <MultiValueContextDemo>
         <BannerPage></BannerPage>
       </MultiValueContextDemo>
-
       <ProductsCategoryPage></ProductsCategoryPage>
     </div>
   );

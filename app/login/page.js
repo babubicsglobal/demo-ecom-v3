@@ -7,8 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import GlobalConfig from "./../../app/BigComConfig/config";
-
+import BigCommerce from "node-bigcommerce";
 function Login() {
   const [commerceData, setCommerceData] = useState([]);
   const router = useRouter();
@@ -39,7 +38,7 @@ function Login() {
 
     if (result.data.is_valid === true) {
       console.log("Success");
-      router.push("/Home");
+      router.push("/home");
     } else {
       console.log("Failier");
     }

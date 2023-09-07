@@ -2,12 +2,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { request } from "http";
+import GlobalConfig from "./../GlobalConfig/config";
 
-const CartPage = ({ params }) => {
-  const cartId = params.cartId;
+const CartPage = () => {
+  const cartId = GlobalConfig.cartId;
   const [cartItems, setCartItems] = useState([]);
   const router = useRouter();
   const rupeesSymbol = "₹ ";
@@ -59,7 +60,7 @@ const CartPage = ({ params }) => {
       0
     );
 
-    const shippingCharge = 50;
+    const shippingCharge = 0;
     const total = +subtotal.toFixed(2);
 
     document.getElementById("subtotal").textContent =
@@ -71,7 +72,7 @@ const CartPage = ({ params }) => {
   };
 
   const goToCheckoutPage = () => {
-    const destinationURL = `/checkout/${params.cartId}`;
+    const destinationURL = `/checkout`;
     router.push(destinationURL);
   };
 
@@ -101,7 +102,7 @@ const CartPage = ({ params }) => {
         console.log("Delete", response.data);
         if (cartItems.length === 1) {
           sessionStorage.removeItem("cart_id");
-          router.push("/Home");
+          router.push("/home");
         } else {
           getCartDetails();
         }
@@ -153,7 +154,7 @@ const CartPage = ({ params }) => {
         console.log("Success");
         console.log("Delete", response.data);
         sessionStorage.removeItem("cart_id");
-        router.push("/Home");
+        router.push("/home");
       })
       .catch(function (error) {
         console.log(error);

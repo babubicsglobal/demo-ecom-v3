@@ -8,15 +8,18 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { Collapse, initTE } from "tw-elements";
-import { CustomerAPI } from "../../api/customer/getCustomerAPI";
-import OrderSummaryCartList from "../../../components/orderSummary/CartList";
+import { CustomerAPI } from "../api/customer/getCustomerAPI";
+import OrderSummaryCartList from "../../components/orderSummary/CartList";
+import GlobalConfig from "./../GlobalConfig/config";
 
-const CheckoutPage = ({ params }) => {
+const CheckoutPage = () => {
   const [isError, setIsError] = useState(null);
   const [customerData, setCustomerData] = useState([]);
   const [getSessionID, setSessionID] = useState("");
   const [getCusValue, setCusValue] = useState([]);
   const [cartItem, setCartItem] = useState([]);
+
+  const router = useRouter();
 
   const onSubmit = async (data) => {
     console.log("request.email.data", data);
@@ -120,7 +123,7 @@ const CheckoutPage = ({ params }) => {
 
   const getCartDetails = async () => {
     const request = {
-      id: params.id,
+      id: GlobalConfig.cartId,
     };
     const result = await axios
       .post("../api/getCart", request)
