@@ -154,6 +154,7 @@ const CheckoutPage = ({ params }) => {
     getCustomerDetails();
   }, [customerData, getSessionID]);
   console.log("customerData", customerData, getSessionID, getCusValue);
+
   return (
     <section className="bg-gray-100 min-h-screen">
       <div className="container mx-auto ">
@@ -739,7 +740,11 @@ const CheckoutPage = ({ params }) => {
             </div>
           </div>
           <div className="col-span-1 px-3 bg-white">
-            <OrderSummaryCartList cartListData={cartItem ?? []} />
+            <OrderSummaryCartList
+              cartListData={cartItem ?? []}
+              customerId={getSessionID ?? ""}
+              customerData={getCusValue ?? {}}
+            />
           </div>
         </div>
       </div>

@@ -9,15 +9,12 @@ export async function POST(request) {
     accessToken: GlobalConfig.accessToken,
     responseType: GlobalConfig.responseType,
     headers: GlobalConfig.headers,
-    apiVersion: GlobalConfig.apiVersion,
+    apiVersion: "v2",
   });
-  console.log(bigCommerce, "bigCommerce");
+  console.log(request, "req value");
   const res = await request.json();
-  console.log(res, "res");
-  const validateUsers = await bigCommerce.post(
-    "/customers/validate-credentials",
-    res
-  );
+  console.log(res, "carts");
+  const CreateOrder = await bigCommerce.post("/orders", res);
 
-  return NextResponse.json(validateUsers);
+  return NextResponse.json(CreateOrder);
 }

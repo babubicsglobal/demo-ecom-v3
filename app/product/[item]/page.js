@@ -26,7 +26,7 @@ function ProductDetailpage({ params }) {
   };
 
   const dec = () => {
-    setCount(Math.max(0, count - 1));
+    setCount(Math.max(1, count - 1));
   };
 
   const CounterDisplay = ({ count }) => {
@@ -41,11 +41,13 @@ function ProductDetailpage({ params }) {
   //   const getMasterId = useMemo(() => productItem, [productItem]);
 
   const getProductBySku = async () => {
-    const productSlug = `/${params?.item}/`;
+    const productSlug = `${params?.item}`;
     console.log("productSlug", productSlug);
 
     const filteredProduct = productDetail?.filter((item) =>
-      productSlug ? item?.custom_url?.url === productSlug : true
+      productSlug
+        ? item?.custom_url?.url.replace(/\//g, "") === productSlug
+        : true
     );
     setproductList(filteredProduct);
     return filteredProduct;
@@ -86,6 +88,8 @@ function ProductDetailpage({ params }) {
         },
         locale: "en-US",
       };
+
+      console.log("request CreateCart", CreateCart);
       const result = await axios
         .post("../api/cart", CreateCart)
         .then(function (response) {
@@ -112,6 +116,7 @@ function ProductDetailpage({ params }) {
         },
         locale: "en-US",
       };
+      console.log("request UpdateCart", UpdateCart);
       const result = await axios
         .post("../api/updateCart", UpdateCart)
         .then(function (response) {
@@ -150,7 +155,7 @@ function ProductDetailpage({ params }) {
     setsessionItem(+sessionStorage.getItem("customer_Number"));
   }, []);
 
-  console.log("productList", productDetail);
+  console.log("productDetail", productDetail);
   console.log("productList", productList);
 
   console.log("customerID", sessionItem);
@@ -231,7 +236,7 @@ function ProductDetailpage({ params }) {
               </span>
             </div>
             <div
-              className="leading-relaxed"
+              className="leading-relaxed text-base"
               dangerouslySetInnerHTML={{ __html: productList[0]?.description }}
             ></div>
 

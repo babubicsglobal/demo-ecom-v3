@@ -10,7 +10,7 @@ const CartPage = ({ params }) => {
   const cartId = params.cartId;
   const [cartItems, setCartItems] = useState([]);
   const router = useRouter();
-  const rupeesSymbol = "₹";
+  const rupeesSymbol = "₹ ";
 
   useEffect(() => {
     getCartDetails();
@@ -25,7 +25,7 @@ const CartPage = ({ params }) => {
   const dec = (index) => {
     let count = cartItems[index].quantity;
     if (count === 1) {
-      handledeleteItem(cartItems[index]);
+      handleDeleteItem(cartItems[index]);
     } else {
       updateCartItem(cartItems[index], count - 1);
     }
@@ -62,11 +62,12 @@ const CartPage = ({ params }) => {
     const shippingCharge = 50;
     const total = +subtotal.toFixed(2);
 
-    document.getElementById("subtotal").textContent = subtotal.toFixed(2);
-    document.getElementById("shipping").textContent = shippingCharge.toFixed(2);
-    document.getElementById("total").textContent = (
-      shippingCharge + total
-    ).toFixed(2);
+    document.getElementById("subtotal").textContent =
+      rupeesSymbol + subtotal.toFixed(2);
+    document.getElementById("shipping").textContent =
+      rupeesSymbol + shippingCharge.toFixed(2);
+    document.getElementById("total").textContent =
+      rupeesSymbol + (shippingCharge + total).toFixed(2);
   };
 
   const goToCheckoutPage = () => {
@@ -74,7 +75,7 @@ const CartPage = ({ params }) => {
     router.push(destinationURL);
   };
 
-  const handledeleteItem = (item) => {
+  const handleDeleteItem = (item) => {
     const result = window.confirm(
       "Are you sure, you want to delete this product?"
     );
@@ -152,7 +153,7 @@ const CartPage = ({ params }) => {
         console.log("Success");
         console.log("Delete", response.data);
         sessionStorage.removeItem("cart_id");
-        window.history.back();
+        router.push("/Home");
       })
       .catch(function (error) {
         console.log(error);
@@ -161,13 +162,13 @@ const CartPage = ({ params }) => {
   };
 
   return (
-    <div class="container mx-auto p-4">
-      <h1 class="text-2xl font-normal mb-4 text-center py-1">
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-normal mb-4 text-center py-1">
         Your Cart {cartItems.length} Item(s)
       </h1>
       <table className="w-full table-auto">
         <thead>
-          <tr class="bg-gray-200">
+          <tr className="bg-gray-200">
             <th className="px-4 py-2">Product</th>
             <th className="px-4 py-2">Quantity</th>
             <th className="px-4 py-2">Price</th>
@@ -177,13 +178,13 @@ const CartPage = ({ params }) => {
         </thead>
         <tbody>
           {cartItems.map((item, index) => (
-            <tr key={item.id} class="border-b">
+            <tr key={item.id} className="border-b">
               <td className="border px-4 py-2 text-center">
-                <div class="flex items-center">
+                <div className="flex items-center">
                   <img
                     src={item.image_url}
                     alt={item.name}
-                    class="w-12 h-12 object-contain mr-4"
+                    className="w-12 h-12 object-contain mr-4"
                   />
                   <span>{item.name}</span>
                 </div>
@@ -214,7 +215,7 @@ const CartPage = ({ params }) => {
                 ₹&nbsp;{item.sale_price * item.quantity}
               </td>
               <td className="border px-4 py-2  text-center">
-                <button onClick={() => handledeleteItem(item)}>
+                <button onClick={() => handleDeleteItem(item)}>
                   <TrashIcon className="w-5 h-5 text-red-500" />
                 </button>
               </td>
@@ -225,17 +226,17 @@ const CartPage = ({ params }) => {
       <div className="ml-auto w-1/4 py-8 text-left">
         <div className="flex justify-between mb-2 px-6">
           <span>Subtotal:</span>
-          <span id="subtotal">{rupeesSymbol} 0</span>
+          <span id="subtotal">{rupeesSymbol}0</span>
         </div>
         <div className="flex justify-between mb-2  px-6">
-          <span>Total:</span>
-          <span id="shipping"> {rupeesSymbol} 0</span>
+          <span>Shipping:</span>
+          <span id="shipping"> {rupeesSymbol}0</span>
         </div>
         <div className="flex justify-between  px-6">
           <span>Grand Total:</span>
-          <span id="total"> {rupeesSymbol} 0</span>
+          <span id="total"> {rupeesSymbol}0</span>
         </div>
-        <div class="mt-4 text-right px-5">
+        <div className="mt-4 text-right px-5">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             onClick={() => goToCheckoutPage()}
@@ -243,9 +244,9 @@ const CartPage = ({ params }) => {
             Checkout
           </button>
         </div>
-        <div class="mt-4 text-right px-5">
+        <div className="mt-4 text-right px-5">
           <button
-            class="border border-text-black hover:border-black bg-transparent text-gray-500 hover:text-black py-2 px-4 rounded hover:bg-transparent"
+            className="border border-text-black hover:border-black bg-transparent text-gray-500 hover:text-black py-2 px-4 rounded hover:bg-transparent"
             onClick={() => clearCartDetails()}
           >
             Clear Cart

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { use } from "react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import GlobalConfig from "./../../app/BigComConfig/config";
 
 function Login() {
   const [commerceData, setCommerceData] = useState([]);
@@ -30,18 +31,19 @@ function Login() {
   const { errors } = formState;
 
   const onSubmit = async (data) => {
-    console.log("data", data);
-    // const email = data.email;
-    // const password = data.password;
     const user = { email: data.email, password: data.password, channel_id: 1 };
-    // console.log("user data",user);
+
     const result = await axios.post("api/users", user);
+
+    console.log("Result", result);
+
     if (result.data.is_valid === true) {
       console.log("Success");
       router.push("/Home");
     } else {
       console.log("Failier");
     }
+
     setCommerceData(result.data);
     sessionStorage.setItem("customer_Number", result.data.customer_id);
     console.log("User Validation Response ", result.data.is_valid);
