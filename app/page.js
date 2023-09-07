@@ -5,31 +5,6 @@ import { useEffect, useState } from "react";
 import GlobalConfig from "./GlobalConfig/config";
 
 export default function Home() {
-  const [data, setData] = useState();
-
-  useEffect(() => {
-    callBigComConfigAPI();
-  }, []);
-
-  const callBigComConfigAPI = async () => {
-    try {
-      const res = await fetch(
-        `https://cdn.contentful.com/spaces/gepmlpwpoea5/environments/master/entries/Vc5spwtshPg4sfYQNkqFi`,
-        {
-          method: "GET",
-          headers: {
-            Authorization:
-              "Bearer " + process.env.NEXT_PUBLIC_CONTENTFUL_DELIVERY_TOKEN,
-          },
-        }
-      );
-      const data = await res.json();
-      setBigComCredentials(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   function setBigComCredentials(data) {
     process.env.BIG_COM_CLIENT_ID = data.fields.clientId;
     process.env.BIG_COM_STOREHASH = data.fields.storeHash;
