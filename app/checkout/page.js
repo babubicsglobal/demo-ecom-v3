@@ -7,10 +7,8 @@ import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { Collapse, initTE } from "tw-elements";
-import { CustomerAPI } from "../../api/customer/getCustomerAPI";
-import OrderSummaryCartList from "../../../components/orderSummary/CartList";
-import GlobalConfig from "../../globalConfig/config";
+import { CustomerAPI } from "./../api/customer/getCustomerAPI";
+import OrderSummaryCartList from "./../../components/orderSummary/CartList";
 
 const CheckoutPage = () => {
   const [isError, setIsError] = useState(false);
@@ -109,7 +107,7 @@ const CheckoutPage = () => {
 
   console.log("errors", errors);
 
-  const getCustomerDetails = async () => {
+  const getCustomerDetails = async (customerId) => {
     const getCustomerItem = customerData?.find((item) => {
       return getSessionID === item?.id;
     });
@@ -135,6 +133,30 @@ const CheckoutPage = () => {
   };
 
   useEffect(() => {
+    const initTE = async () => {
+      const { initTE } = await import("tw-elements");
+      const { Collapse } = await import("tw-elements"); // Import the Collapse component if needed
+      initTE({ Collapse }); // Call the initTE function with the Collapse component
+    };
+    initTE();
+
+    getCartDetails(sessionStorage.getItem("cart_id"));
+    var config = { "Access-Control-Allow-Origin": "*" };
+    CustomerAPI(
+      config,
+      (response) => {
+        setCustomerData(response.data.data);
+      },
+      (err) => {
+        //error
+        console.log(err);
+      }
+    );
+    setSessionID(+sessionStorage.getItem("customer_Number"));
+    getCustomerDetails(sessionStorage.getItem("customer_Number"));
+  }, []);
+
+  /*useEffect(() => {
     getCartDetails(sessionStorage.getItem("cart_id"));
     var config = { "Access-Control-Allow-Origin": "*" };
     CustomerAPI(
@@ -154,7 +176,7 @@ const CheckoutPage = () => {
     initTE({ Collapse });
     getCustomerDetails();
   }, [customerData, getSessionID]);
-  console.log("customerData", customerData, getSessionID, getCusValue);
+  console.log("customerData", customerData, getSessionID, getCusValue);*/
 
   return (
     <section className="bg-gray-100 min-h-screen">

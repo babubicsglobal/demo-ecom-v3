@@ -8,10 +8,12 @@ import { request } from "http";
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
+  const [cartId, setCartId] = useState("");
   const router = useRouter();
   const rupeesSymbol = "₹ ";
 
   useEffect(() => {
+    setCartId(sessionStorage.getItem("cart_id"));
     getCartDetails(sessionStorage.getItem("cart_id"));
   }, []);
 
@@ -70,7 +72,7 @@ const CartPage = () => {
   };
 
   const goToCheckoutPage = () => {
-    router.push("/checkout/details");
+    router.push("/checkout");
   };
 
   const handleDeleteItem = (item) => {
@@ -96,12 +98,12 @@ const CartPage = () => {
       .then(function (response) {
         alert("Cart Item deleted successfully!");
         console.log("Success");
-        console.log("Delete", response.data);
+
         if (cartItems.length === 1) {
           sessionStorage.removeItem("cart_id");
           router.push("/home");
         } else {
-          getCartDetails();
+          getCartDetails(cartId);
         }
       })
       .catch(function (error) {
@@ -131,7 +133,7 @@ const CartPage = () => {
       .then(function (response) {
         console.log("Success");
         console.log("cart details", response.data);
-        getCartDetails();
+        getCartDetails(cartId);
         //setIsError(false);
       })
       .catch(function (error) {
@@ -149,7 +151,6 @@ const CartPage = () => {
       .then(function (response) {
         alert("Cart Item deleted successfully!");
         console.log("Success");
-        console.log("Delete", response.data);
         sessionStorage.removeItem("cart_id");
         router.push("/home");
       })
