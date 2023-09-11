@@ -18,7 +18,6 @@ const CheckoutPage = () => {
   const [getSessionID, setSessionID] = useState("");
   const [getCusValue, setCusValue] = useState([]);
   const [cartItem, setCartItem] = useState([]);
-  const cartId = GlobalConfig.cartId;
 
   const onSubmit = async (data) => {
     console.log("request.email.data", data);
@@ -120,7 +119,7 @@ const CheckoutPage = () => {
     setCusValue(getCustomerItem);
   };
 
-  const getCartDetails = async () => {
+  const getCartDetails = async (cartId) => {
     const request = {
       id: cartId,
     };
@@ -136,8 +135,7 @@ const CheckoutPage = () => {
   };
 
   useEffect(() => {
-    initTE({ Collapse });
-    getCartDetails();
+    getCartDetails(sessionStorage.getItem("cart_id"));
     var config = { "Access-Control-Allow-Origin": "*" };
     CustomerAPI(
       config,
@@ -153,6 +151,7 @@ const CheckoutPage = () => {
   }, []);
 
   useEffect(() => {
+    initTE({ Collapse });
     getCustomerDetails();
   }, [customerData, getSessionID]);
   console.log("customerData", customerData, getSessionID, getCusValue);

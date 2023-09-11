@@ -5,16 +5,14 @@ import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { request } from "http";
-import GlobalConfig from "./../globalConfig/config";
 
 const CartPage = () => {
-  const cartId = GlobalConfig.cartId;
   const [cartItems, setCartItems] = useState([]);
   const router = useRouter();
   const rupeesSymbol = "₹ ";
 
   useEffect(() => {
-    getCartDetails();
+    getCartDetails(sessionStorage.getItem("cart_id"));
   }, []);
 
   const inc = (index) => {
@@ -36,7 +34,7 @@ const CartPage = () => {
     return <div className="px-3 py-1">{count}</div>;
   };
 
-  const getCartDetails = async () => {
+  const getCartDetails = async (cartId) => {
     const request = {
       id: cartId,
     };

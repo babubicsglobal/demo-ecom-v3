@@ -97,7 +97,7 @@ function ProductDetailpage({ params }) {
           console.log("Success");
           console.log("cart id", response.data);
           sessionStorage.setItem("cart_id", response.data.data.id);
-          GlobalConfig.cartId = response.data.data.id;
+
           const destinationURL = `/cartDetail`;
           // const destinationURL = `/cartDetail/${response.data.data.id}`;
           router.push(destinationURL);
@@ -125,7 +125,7 @@ function ProductDetailpage({ params }) {
           console.log("Success");
           console.log("cart id", response.data);
           sessionStorage.setItem("cart_id", response.data.data.id);
-          GlobalConfig.cartId = response.data.data.id;
+
           const destinationURL = `/cartDetail`;
           //const destinationURL = `/cartDetail/${response.data.data.id}`;
           router.push(destinationURL);
