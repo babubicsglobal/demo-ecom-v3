@@ -8,16 +8,17 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { Collapse, initTE } from "tw-elements";
-import { CustomerAPI } from "../api/customer/getCustomerAPI";
-import OrderSummaryCartList from "../../components/orderSummary/CartList";
-import GlobalConfig from "./../globalConfig/config";
+import { CustomerAPI } from "../../api/customer/getCustomerAPI";
+import OrderSummaryCartList from "../../../components/orderSummary/CartList";
+import GlobalConfig from "../../globalConfig/config";
 
 const CheckoutPage = () => {
-  const [isError, setIsError] = useState(null);
+  const [isError, setIsError] = useState(false);
   const [customerData, setCustomerData] = useState([]);
   const [getSessionID, setSessionID] = useState("");
   const [getCusValue, setCusValue] = useState([]);
   const [cartItem, setCartItem] = useState([]);
+  const cartId = GlobalConfig.cartId;
 
   const onSubmit = async (data) => {
     console.log("request.email.data", data);
@@ -121,7 +122,7 @@ const CheckoutPage = () => {
 
   const getCartDetails = async () => {
     const request = {
-      id: GlobalConfig.cartId,
+      id: cartId,
     };
     const result = await axios
       .post("../api/getCart", request)
@@ -161,9 +162,6 @@ const CheckoutPage = () => {
       <div className="container mx-auto ">
         <div className="grid grid-cols-3 gap-4 py-6 mt-3 h-full ">
           <div className="col-span-2 px-3 bg-white">
-            {/* start checkout */}
-
-            {/* end checkout */}
             <div id="accordionExample" className="my-6">
               <div className="rounded-t-lg border-b-2 border-neutral-200 bg-white dark:border-neutral-600 dark:bg-neutral-800">
                 <h2 className="mb-0" id="headingOne">
@@ -279,7 +277,7 @@ const CheckoutPage = () => {
                     <form
                       className="space-y-4 md:space-y-6"
                       action="#"
-                      onSubmit={handleSubmit(onSubmit)}
+                      onSubmit={() => handleSubmit(onSubmit)}
                       autoComplete="off"
                     >
                       <div className="flex mb-4">

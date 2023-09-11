@@ -72,8 +72,7 @@ const CartPage = () => {
   };
 
   const goToCheckoutPage = () => {
-    const destinationURL = `/checkout`;
-    router.push(destinationURL);
+    router.push("/checkout/details");
   };
 
   const handleDeleteItem = (item) => {
