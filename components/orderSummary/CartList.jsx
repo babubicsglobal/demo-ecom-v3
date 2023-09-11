@@ -70,7 +70,7 @@ const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
       0
     );
 
-    const shippingCharge = 0;
+    const shippingCharge = 50;
     const total = +subtotal.toFixed(2);
 
     document.getElementById("subtotal").textContent = subtotal.toFixed(2);

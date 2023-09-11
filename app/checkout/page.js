@@ -10,7 +10,7 @@ import * as Yup from "yup";
 import { Collapse, initTE } from "tw-elements";
 import { CustomerAPI } from "../api/customer/getCustomerAPI";
 import OrderSummaryCartList from "../../components/orderSummary/CartList";
-import GlobalConfig from "./../GlobalConfig/config";
+import GlobalConfig from "./../globalConfig/config";
 
 const CheckoutPage = () => {
   const [isError, setIsError] = useState(null);
@@ -18,8 +18,6 @@ const CheckoutPage = () => {
   const [getSessionID, setSessionID] = useState("");
   const [getCusValue, setCusValue] = useState([]);
   const [cartItem, setCartItem] = useState([]);
-
-  const router = useRouter();
 
   const onSubmit = async (data) => {
     console.log("request.email.data", data);

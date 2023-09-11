@@ -10,6 +10,7 @@ function HomePage() {
       <MultiValueContextDemo>
         <BannerPage></BannerPage>
       </MultiValueContextDemo>
+
       <ProductsCategoryPage></ProductsCategoryPage>
     </div>
   );

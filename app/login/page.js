@@ -7,7 +7,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import BigCommerce from "node-bigcommerce";
+import GlobalConfig from "../globalConfig/config";
+
 function Login() {
   const [commerceData, setCommerceData] = useState([]);
   const router = useRouter();

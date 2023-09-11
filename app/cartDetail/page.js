@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { request } from "http";
-import GlobalConfig from "./../GlobalConfig/config";
+import GlobalConfig from "./../globalConfig/config";
 
 const CartPage = () => {
   const cartId = GlobalConfig.cartId;
@@ -60,7 +60,7 @@ const CartPage = () => {
       0
     );
 
-    const shippingCharge = 0;
+    const shippingCharge = 50;
     const total = +subtotal.toFixed(2);
 
     document.getElementById("subtotal").textContent =

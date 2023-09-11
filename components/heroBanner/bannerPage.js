@@ -2,7 +2,7 @@
 import React from "react";
 import { useContext, useState, useEffect } from "react";
 import { CounterContext } from "./../../app/context/commerceProduct";
-import GlobalConfig from "../../app/GlobalConfig/config";
+import GlobalConfig from "../../app/globalConfig/config";
 
 const BannerPage = () => {
   const cfulFilterData = useContext(CounterContext);
