@@ -7,6 +7,7 @@ import axios from "axios";
 import { CustomerAPI } from "./../../api/customer/getCustomerAPI";
 import { Linden_Hill } from "next/font/google";
 import GlobalConfig from "./../../globalConfig/config";
+import { Rating } from "react-simple-star-rating";
 
 function ProductDetailpage({ params }) {
   console.log("params", params);
@@ -16,6 +17,7 @@ function ProductDetailpage({ params }) {
   const [sessionItem, setsessionItem] = useState("");
   const [productDetail, setproductDetail] = useState([]);
   const [count, setCount] = useState(1);
+  const [rating, setRating] = useState("");
 
   //   const getProductItemKey = async () => {
   //     setproductItem(cfulFilterData);
@@ -51,6 +53,9 @@ function ProductDetailpage({ params }) {
         : true
     );
     setproductList(filteredProduct);
+    setRating(
+      filteredProduct[0]?.reviews_rating_sum / filteredProduct[0]?.reviews_count
+    );
     return filteredProduct;
   };
 
@@ -144,7 +149,9 @@ function ProductDetailpage({ params }) {
 
   useEffect(() => {
     // getProductItemKey();
+
     getBigcomProducts();
+
     var config = { "Access-Control-Allow-Origin": "*" };
     CustomerAPI(
       config,
@@ -161,6 +168,7 @@ function ProductDetailpage({ params }) {
 
   console.log("productDetail", productDetail);
   console.log("productList", productList);
+  console.log("rating", rating);
 
   console.log("customerID", sessionItem);
   return (
@@ -181,61 +189,20 @@ function ProductDetailpage({ params }) {
             </h1>
             <div className="flex mb-4">
               <span className="flex items-center">
-                <svg
-                  fill="currentColor"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="w-4 h-4 text-red-500"
-                  viewBox="0 0 24 24"
+                <div
+                  style={{
+                    direction: "ltr",
+                    fontFamily: "sans-serif",
+                    touchAction: "none",
+                  }}
                 >
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                </svg>
-                <svg
-                  fill="currentColor"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="w-4 h-4 text-red-500"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                </svg>
-                <svg
-                  fill="currentColor"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="w-4 h-4 text-red-500"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                </svg>
-                <svg
-                  fill="currentColor"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="w-4 h-4 text-red-500"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                </svg>
-                <svg
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="w-4 h-4 text-red-500"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                </svg>
+                  <Rating
+                    initialValue={rating}
+                    allowHover="false"
+                    allowFraction="true"
+                    readonly="true"
+                  />
+                </div>
                 <span className="text-gray-600 ml-3">
                   {productList[0]?.reviews_count} Reviews
                 </span>
