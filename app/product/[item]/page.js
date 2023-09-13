@@ -168,7 +168,7 @@ function ProductDetailpage({ params }) {
 
   console.log("productDetail", productDetail);
   console.log("productList", productList);
-  console.log("rating", rating);
+  //console.log("rating", rating);
 
   console.log("customerID", sessionItem);
   return (
