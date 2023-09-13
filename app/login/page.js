@@ -7,7 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import GlobalConfig from "../globalConfig/config";
+import { signIn } from "next-auth/react";
 
 function Login() {
   const [commerceData, setCommerceData] = useState([]);
@@ -35,19 +35,26 @@ function Login() {
 
     const result = await axios.post("api/users", user);
 
-    console.log("Result", result);
-
     if (result.data.is_valid === true) {
-      console.log("Success");
-      router.push("/home");
-    } else {
-      console.log("Failier");
-    }
+      console.log("Result", result.data);
+      setCommerceData(result.data);
+      sessionStorage.setItem("customer_Number", result.data.customer_id);
+      console.log("User Validation Response ", result.data.is_valid);
 
-    setCommerceData(result.data);
-    sessionStorage.setItem("customer_Number", result.data.customer_id);
-    console.log("User Validation Response ", result.data.is_valid);
+      callNextAuth(data.email, result.data.customer_id);
+    } else {
+      // console.log("Failier");
+      alert("User Not exist");
+    }
     reset();
+  };
+  const callNextAuth = async (email, customer_id) => {
+    await signIn("credentials", {
+      email: email,
+      customerId: customer_id,
+      redirect: true,
+      callbackUrl: "/home",
+    });
   };
 
   //   const onSubmit = (data) => console.log(data);
