@@ -34,9 +34,29 @@ const handler = NextAuth({
       },
     }),
   ],
-
+  secret: process.env.AUTH_SECRET,
   pages: {
     signIn: "/login",
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.accessToken = user.jwt;
+      }
+
+      return token;
+    },
+    async session({ session, token, user }) {
+      session.user.accessToken = token.accessToken;
+      session.user.refreshToken = token.refreshToken;
+      session.user.accessTokenExpires = token.accessTokenExpires;
+
+      return session;
+    },
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 Days
   },
 });
 

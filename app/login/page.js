@@ -1,5 +1,5 @@
 "use client";
-import React, { use } from "react";
+import React from "react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
@@ -42,6 +42,7 @@ function Login() {
       console.log("User Validation Response ", result.data.is_valid);
 
       callNextAuth(data.email, result.data.customer_id);
+      router.push("/home");
     } else {
       // console.log("Failier");
       alert("User Not exist");
@@ -52,11 +53,12 @@ function Login() {
     await signIn("credentials", {
       email: email,
       customerId: customer_id,
-      redirect: true,
-      callbackUrl: "/home",
+      redirect: false,
+      callbackUrl: "/",
     });
   };
 
+  // if (callNextAuth.ok) router.push("/Home");
   //   const onSubmit = (data) => console.log(data);
   // const customerValue = commerceData?.customer_id;
   useEffect(() => {
