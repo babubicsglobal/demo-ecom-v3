@@ -19,7 +19,28 @@ const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
     router.push("/home");
   };
 
-  const handlePlaceOrder = async () => {
+  const handlePlaceOrder = async () =>  {
+    let requestData = {
+      "order": {
+        "id": 102,
+        "is_recurring": false
+      }
+    };
+
+    const result = await axios
+    .post("../api/createToken", requestData)
+    .then(function (response) {
+      console.log("Token Resssponse", response.data);
+      alert("PAT",response.data.id);
+     
+    })
+    .catch(function (error) {
+      console.log(error);
+      //setIsError(true);
+    });
+  }
+
+  const handlePlaceOrder1 = async () => {
     var productsData = [];
     for (let i = 0; i < cartListData.length; i++) {
       let product = {
