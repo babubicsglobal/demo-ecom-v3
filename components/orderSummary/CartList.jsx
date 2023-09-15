@@ -19,7 +19,7 @@ const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
     router.push("/home");
   };
 
-  const handlePlaceOrder = async () =>  {
+  const handlePlaceOrder1 = async () =>  {
     let requestData = {
       "order": {
         "id": 102,
@@ -40,7 +40,7 @@ const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
     });
   }
 
-  const handlePlaceOrder1 = async () => {
+  const handlePlaceOrder = async () => {
     var productsData = [];
     for (let i = 0; i < cartListData.length; i++) {
       let product = {
