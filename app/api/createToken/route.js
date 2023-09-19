@@ -7,14 +7,7 @@ export async function POST(request) {
     storeHash: GlobalConfig.storeHash,
     accessToken: GlobalConfig.accessToken,
     responseType: GlobalConfig.responseType,
-    headers:  {
-        'X-Auth-Token': 'ma7p9efpdkp891wjm132dq7uhdtqu5k', 
-        'Content-Type': 'application/json',
-          "Access-Control-Allow-Origin" : "*",
-         
-          'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-          'Access-Control-Request-Method': 'GET, POST, DELETE, PUT, OPTIONS'
-      },
+    headers: GlobalConfig.headers,
     apiVersion: GlobalConfig.apiVersion,
   });
   

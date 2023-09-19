@@ -19,27 +19,6 @@ const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
     router.push("/home");
   };
 
-  const handlePlaceOrder1 = async () =>  {
-    let requestData = {
-      "order": {
-        "id": 102,
-        "is_recurring": false
-      }
-    };
-
-    const result = await axios
-    .post("../api/createToken", requestData)
-    .then(function (response) {
-      console.log("Token Resssponse", response.data);
-      alert("PAT",response.data.id);
-     
-    })
-    .catch(function (error) {
-      console.log(error);
-      //setIsError(true);
-    });
-  }
-
   const handlePlaceOrder = async () => {
     var productsData = [];
     for (let i = 0; i < cartListData.length; i++) {
@@ -52,20 +31,22 @@ const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
       productsData.push(product);
     }
     const billingAddress = {
-      first_name: customerData.first_name,
-      last_name: customerData.last_name,
+      first_name: "preethi",
+      last_name: "G",
       street_1: "Main Street",
       city: "Austin",
       state: "Texas",
       zip: "78751",
       country: "United States",
       country_iso2: "US",
-      email: customerData.email,
+      email: "preeth@test.com",
     };
     const CreateOrder = {
+      status_id : 0,
       customer_id: customerId,
       products: productsData,
       billing_address: billingAddress,
+      
     };
 
     console.log("CreateOrder", CreateOrder);
@@ -74,8 +55,9 @@ const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
       .post("../api/createOrder", CreateOrder)
       .then(function (response) {
         console.log("Order Response", response.data);
-        sessionStorage.removeItem("cart_id");
-        setIsModalOpen(true);
+        createToken(response.data.id);
+       // sessionStorage.removeItem("cart_id");
+       //// setIsModalOpen(true);
       })
       .catch(function (error) {
         console.log(error);
@@ -83,6 +65,76 @@ const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
       });
   };
 
+
+  const createToken = async (orderId) =>  {
+    let requestData = {
+      "order": {
+        "id": orderId,
+        "is_recurring": false
+      }
+    };
+
+    const result = await axios
+    .post("../api/createToken", requestData)
+    .then(function (response) {
+      console.log("Token Resssponse", response.data);
+      console.log("PAT",response.data.data.id);
+      handlePayment(PAToken);
+     
+    })
+    .catch(function (error) {
+      console.log(error);
+      //setIsError(true);
+    });
+  }
+
+  const handlePayment = async (PAToken) => {
+   
+  const paymentRequest = {
+    "payment": {
+
+      "instrument": {
+
+        "type": "card",
+
+        "cardholder_name": "success",
+
+        "number":"4111111111111111",
+
+        "expiry_month": 4,
+
+        "expiry_year": 2030,
+
+        "verification_value":"422",
+
+      },
+
+      "payment_method_id": "card"
+
+    }
+  };
+
+
+
+  console.log("paymen",paymentRequest);
+
+  
+  const result = await axios
+  .post("../api/payment", paymentRequest)
+  .then(function (response) {
+    console.log("payment Response", response.data);
+    
+     sessionStorage.removeItem("cart_id");
+    setIsModalOpen(true);
+  })
+  .catch(function (error) {
+    console.log(error);
+    //setIsError(true);
+  });
+
+  }
+
+ 
   console.log("cartListData", cartListData);
 
   const calculateOrderSummary = () => {
