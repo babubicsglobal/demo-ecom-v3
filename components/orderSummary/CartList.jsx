@@ -55,9 +55,9 @@ const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
       .post("../api/createOrder", CreateOrder)
       .then(function (response) {
         console.log("Order Response", response.data);
-        createToken(response.data.id);
-       // sessionStorage.removeItem("cart_id");
-       //// setIsModalOpen(true);
+       // createToken(response.data.id);
+        sessionStorage.removeItem("cart_id");
+        setIsModalOpen(true);
       })
       .catch(function (error) {
         console.log(error);
