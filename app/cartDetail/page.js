@@ -118,15 +118,17 @@ const CartPage = () => {
       itemId: item.id,
       line_item: {
         quantity: quantity,
-        product_id: item.id,
-        list_price: item.sale_price,
+        product_id: item.product_id,
+        //list_price: item.sale_price,
         variant_id: item.variant_id,
-        name: item.name,
-        gift_wrapping: {},
+        // name: item.name,
+        // gift_wrapping: {},
       },
       gift_certificates: [],
       custom_items: [],
     };
+
+    console.log("Update Cart", request);
 
     const result = await axios
       .post("../api/updateCartItem", request)

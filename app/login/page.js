@@ -36,7 +36,7 @@ function Login() {
     const result = await axios.post("api/users", user);
 
     if (result.data.is_valid === true) {
-      console.log("Result", result.data);
+      console.log("Result cc", result.data);
       setCommerceData(result.data);
       sessionStorage.setItem("customer_Number", result.data.customer_id);
       console.log("User Validation Response ", result.data.is_valid);
