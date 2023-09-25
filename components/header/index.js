@@ -35,6 +35,9 @@ function Header() {
               >
                 Logout
               </button>
+              <Link href="/cartDetail">
+                <img src="/cartIcon.png" alt="Cart" width="40" height="40" />
+              </Link>
             </div>
           ) : (
             <div className="flex items-center lg:order-2">

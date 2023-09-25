@@ -9,6 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { CustomerAPI } from "./../api/customer/getCustomerAPI";
 import OrderSummaryCartList from "./../../components/orderSummary/CartList";
+import { useSession, signOut } from "next-auth/react";
 
 const CheckoutPage = () => {
   const [isError, setIsError] = useState(false);
@@ -16,7 +17,7 @@ const CheckoutPage = () => {
   const [getSessionID, setSessionID] = useState("");
   const [getCusValue, setCusValue] = useState([]);
   const [cartItem, setCartItem] = useState([]);
-
+  const { data } = useSession();
   const onSubmit = async (data) => {
     console.log("request.email.data", data);
     const RegisterUser = [
@@ -228,26 +229,32 @@ const CheckoutPage = () => {
                   <div className="px-5 py-4">
                     <div className="checkout-step optimizedCheckout-checkoutStep checkout-step--customer">
                       <div className="loading-skeleton">
-                        <form>
-                          <div className="grid gap-6 mb-6 md:grid-cols-2">
-                            <div>
-                              <input
-                                type="text"
-                                id="first_name"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Email"
-                              />
+                        {data?.user ? (
+                          <span style={{ marginRight: "15px" }}>
+                            {data?.user?.email}
+                          </span>
+                        ) : (
+                          <form>
+                            <div className="grid gap-6 mb-6 md:grid-cols-2">
+                              <div>
+                                <input
+                                  type="text"
+                                  id="first_name"
+                                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                  placeholder="Email"
+                                />
+                              </div>
+                              <div>
+                                <button
+                                  type="submit"
+                                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                >
+                                  Continue
+                                </button>
+                              </div>
                             </div>
-                            <div>
-                              <button
-                                type="submit"
-                                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                              >
-                                Continue
-                              </button>
-                            </div>
-                          </div>
-                        </form>
+                          </form>
+                        )}
                       </div>
                     </div>
                   </div>
