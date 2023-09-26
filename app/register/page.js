@@ -109,7 +109,10 @@ const Register = () => {
         "Passwords must be at least 7 characters and contain both alphabetic and numeric characters."
       )
       .max(12, "Password cannot exceed more than 12 characters")
-      .matches("^(?=.*[a-zA-Z])(?=.*[0-9])"),
+      .matches(
+        "^(?=.*[a-zA-Z])(?=.*[0-9])",
+        "Passwords must be at least 7 characters and contain both alphabetic and numeric characters."
+      ),
 
     cpassword: Yup.string()
       .required("Confirm Password is required")
