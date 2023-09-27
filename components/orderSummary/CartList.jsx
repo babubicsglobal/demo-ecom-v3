@@ -5,7 +5,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import OrderSuccessModal from "../../components/orderSuccessModal/OrderSuccessModal";
 import axios from "axios";
-const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
+const OrderSummaryList = ({
+  cartListData,
+  customerId,
+  customerData,
+  shippingAddress,
+  errors
+}) => {
   const router = useRouter();
   const rupeesSymbol = "₹";
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,6 +26,8 @@ const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
   };
 
   const handlePlaceOrder = async () => {
+ if(Object.keys(errors).length == 0 ){
+   
     var productsData = [];
     for (let i = 0; i < cartListData.length; i++) {
       let product = {
@@ -30,23 +38,26 @@ const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
       console.log("product", product);
       productsData.push(product);
     }
+
     const billingAddress = {
-      first_name: "preethi",
-      last_name: "G",
-      street_1: "Main Street",
-      city: "Austin",
-      state: "Texas",
-      zip: "78751",
-      country: "United States",
-      country_iso2: "US",
-      email: "preeth@test.com",
+      first_name: customerData.first_name,
+      last_name:customerData.last_name,
+      street_1: customerData.addresses[0]?.address1,
+      street_2: customerData.addresses[0]?.address2,
+      city: customerData.addresses[0]?.city,
+      state: customerData.addresses[0]?.state_or_province,
+      zip: customerData.addresses[0]?.postal_code,
+      country: customerData.addresses[0]?.country,
+      country_iso2: customerData.addresses[0]?.country_code,
+      email: customerData.email,
     };
     const CreateOrder = {
-      status_id : 0,
+      status_id: 0,
       customer_id: customerId,
       products: productsData,
       billing_address: billingAddress,
-      
+      shipping_addresses: shippingAddress,
+      payment_method : "Test Payment Gateway"
     };
 
     console.log("CreateOrder", CreateOrder);
@@ -57,6 +68,189 @@ const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
         console.log("Order Response", response.data);
        // createToken(response.data.id);
         sessionStorage.removeItem("cart_id");
+         setIsModalOpen(true);
+      })
+      .catch(function (error) {
+        console.log(error);
+        //setIsError(true);
+      });
+  
+   }else{
+    alert("Please enter shipping address")
+    }
+  };
+
+  const createToken = async (orderId) => {
+    let requestData = {
+      order: {
+        id: orderId,
+        is_recurring: false,
+      },
+    };
+    console.log("createToken", requestData);
+    const result = await axios
+      .post("../api/createToken", requestData)
+      .then(function (response) {
+        console.log("Token Resssponse", response.data);
+        console.log("PAT", response.data.data.id);
+        handlePayment(response.data.data.id);
+      })
+      .catch(function (error) {
+        console.log(error);
+        //setIsError(true);
+      });
+  };
+
+  const handlePayment = async (PAToken) => {
+    const paymentRequest1 = {
+      payment: {
+        instrument: {
+          type: "card",
+
+          cardholder_name: "success",
+
+          number: "4111111111111111",
+
+          expiry_month: 4,
+
+          expiry_year: 2030,
+
+          verification_value: "422",
+        },
+
+        payment_method_id: "test",
+      },
+    };
+
+    let paymentRequest3 = {
+      payment: {
+        instrument: {},
+
+        payment_method_id: "cod",
+
+        amount: 81,
+
+        currency_code: "INR",
+      },
+    };
+
+    let paymentRequest = {
+      payment: {
+        instrument: {
+          type: "card",
+
+          number: "4111111111111111",
+
+          cardholder_name: "BP",
+
+          expiry_month: 12,
+
+          expiry_year: 2020,
+
+          verification_value: "411",
+        },
+
+        payment_method_id: "authorizenet.card",
+
+        save_instrument: true,
+      },
+    };
+
+    const paymentRequest2 = {
+      payment: {
+        instrument: {
+          type: "card",
+
+          number: "4111111111111111",
+
+          cardholder_name: "success",
+
+          expiry_month: 12,
+
+          expiry_year: 2024,
+
+          verification_value: "123",
+        },
+
+        payment_method_id: "testgateway.card",
+
+        save_instrument: false,
+      },
+    };
+
+   
+    let header = {
+      Authorization: `PAT ${PAToken}`,
+      Accept: "application/vnd.bc.v1+json",
+      "X-Auth-Token": "jkywdw9bj1gq0mb69lbyrrdmjon0m32",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers":
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+      "Access-Control-Request-Method": "GET, POST, DELETE, PUT, OPTIONS",
+    };
+
+    console.log("Header", header);
+
+    try {
+      const res = await fetch(
+        `https://payments.bigcommerce.com/stores/3bkf9t8exj/payments`,
+
+        {
+          method: "POST",
+
+          mode: "no-cors",
+
+          headers: header,
+
+          body: paymentRequest2,
+        }
+      );
+
+      const data = await res.json();
+
+      console.log(data);
+
+      console.log("payment Resssponse", response.data);
+
+      sessionStorage.removeItem("cart_id");
+
+      setIsModalOpen(true);
+    } catch (err) {
+      console.log(err);
+    }
+
+      };
+
+  const handlePayment1 = async (PAToken) => {
+    const paymentRequest = {
+      payment: {
+        instrument: {
+          type: "card",
+
+          cardholder_name: "success",
+
+          number: "4111111111111111",
+
+          expiry_month: 4,
+
+          expiry_year: 2030,
+
+          verification_value: "422",
+        },
+
+        payment_method_id: "card",
+      },
+    };
+
+    console.log("paymen", paymentRequest);
+
+    const result = await axios
+      .post("../api/payment", paymentRequest)
+      .then(function (response) {
+        console.log("payment Response", response.data);
+
+        sessionStorage.removeItem("cart_id");
         setIsModalOpen(true);
       })
       .catch(function (error) {
@@ -65,76 +259,6 @@ const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
       });
   };
 
-
-  const createToken = async (orderId) =>  {
-    let requestData = {
-      "order": {
-        "id": orderId,
-        "is_recurring": false
-      }
-    };
-
-    const result = await axios
-    .post("../api/createToken", requestData)
-    .then(function (response) {
-      console.log("Token Resssponse", response.data);
-      console.log("PAT",response.data.data.id);
-      handlePayment(PAToken);
-     
-    })
-    .catch(function (error) {
-      console.log(error);
-      //setIsError(true);
-    });
-  }
-
-  const handlePayment = async (PAToken) => {
-   
-  const paymentRequest = {
-    "payment": {
-
-      "instrument": {
-
-        "type": "card",
-
-        "cardholder_name": "success",
-
-        "number":"4111111111111111",
-
-        "expiry_month": 4,
-
-        "expiry_year": 2030,
-
-        "verification_value":"422",
-
-      },
-
-      "payment_method_id": "card"
-
-    }
-  };
-
-
-
-  console.log("paymen",paymentRequest);
-
-  
-  const result = await axios
-  .post("../api/payment", paymentRequest)
-  .then(function (response) {
-    console.log("payment Response", response.data);
-    
-     sessionStorage.removeItem("cart_id");
-    setIsModalOpen(true);
-  })
-  .catch(function (error) {
-    console.log(error);
-    //setIsError(true);
-  });
-
-  }
-
- 
   console.log("cartListData", cartListData);
 
   const calculateOrderSummary = () => {
@@ -192,7 +316,8 @@ const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
               </div>
               <div className="ml-4">
                 <p className="text-sm text-gray-600">
-                  {rupeesSymbol}{item.sale_price.toFixed(2)}
+                  {rupeesSymbol}
+                  {item.sale_price.toFixed(2)}
                 </p>
               </div>
             </div>
@@ -235,7 +360,6 @@ const OrderSummaryList = ({ cartListData, customerId, customerData }) => {
       </ul>
 
       <div className="text-center">
-       
         <button
           className="bg-blue-500 text-white rounded-full mt-4 py-2 px-6 hover:bg-blue-600 text-center"
           onClick={handlePlaceOrder}

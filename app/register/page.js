@@ -11,7 +11,6 @@ import { Countries, States } from "../utils/countryData";
 
 const Register = () => {
   const router = useRouter();
-  const countries = ["United States", "Canada", "United Kingdom", "Australia"];
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedState, setSelectedState] = useState("");
   const [isError, setIsError] = useState(null);
@@ -91,13 +90,6 @@ const Register = () => {
   useEffect(() => {
     //Runs only on the first render
   }, []);
-
-  function checkPasswordComplexity(pwd) {
-    var letter = /[a-zA-Z]/;
-    var number = /[0-9]/;
-    var valid = number.test(pwd) && letter.test(pwd); //match a letter _and_ a number
-    return valid;
-  }
 
   // form validation rules
   const validationSchema = Yup.object().shape({

@@ -9,12 +9,14 @@ import { request } from "http";
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [cartId, setCartId] = useState("");
+  const [isLoading, setLoading] = useState(false);
+  const [total, setTotal] = useState("");
   const router = useRouter();
   const rupeesSymbol = "₹ ";
-  const [shouldRenderUI, setShouldRenderUI] = useState(false);
+
   useEffect(() => {
-    setCartId(sessionStorage.getItem("cart_id"));
     getCartDetails(sessionStorage.getItem("cart_id"));
+    setCartId(sessionStorage.getItem("cart_id"));
   }, []);
 
   const inc = (index) => {
@@ -46,10 +48,14 @@ const CartPage = () => {
         console.log("Success");
         console.log("cart", response.data);
         setCartItems(response.data.data.line_items.physical_items);
+
         calculateOrderSummary(response.data.data.line_items.physical_items);
+
+        setLoading(true);
       })
       .catch(function (error) {
         console.log(error);
+        setLoading(true);
         //setIsError(true);
       });
   };
@@ -164,122 +170,122 @@ const CartPage = () => {
         //setIsError(true);
       });
   };
-
-  return cartItems?.length > 0 ? (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-normal mb-4 text-center py-1">
-        Your Cart {cartItems.length} Item(s)
-      </h1>
-      <table className="w-full table-auto">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="px-4 py-2">Product</th>
-            <th className="px-4 py-2">Quantity</th>
-            <th className="px-4 py-2">Price</th>
-            <th className="px-4 py-2">Total</th>
-            <th className="px-4 py-2"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {cartItems.map((item, index) => (
-            <tr key={item.id} className="border-b">
-              <td className="border px-4 py-2 text-center">
-                <div className="flex items-center">
-                  <img
-                    src={item.image_url}
-                    alt={item.name}
-                    className="w-12 h-12 object-contain mr-4"
-                  />
-                  <span>{item.name}</span>
-                </div>
-              </td>
-              <td className="border px-4 py-2 text-center">
-                <div className="flex justify-center items-center">
-                  <button
-                    onClick={() => dec(index)}
-                    className="inc-btn px-3 rounded border appearance-none border-gray-400 py-1"
-                  >
-                    -
-                  </button>
-
-                  <CounterDisplay count={item.quantity} />
-
-                  <button
-                    onClick={() => inc(index)}
-                    className="dec-btn px-3 rounded border appearance-none border-gray-400 py-1"
-                  >
-                    +
-                  </button>
-                </div>
-              </td>
-              <td className="border px-4 py-2  text-center">
-                ₹&nbsp;{item.sale_price}
-              </td>
-              <td className="border px-4 py-2  text-center">
-                ₹&nbsp;{item.sale_price * item.quantity}
-              </td>
-              <td className="border px-4 py-2  text-center">
-                <button onClick={() => handleDeleteItem(item)}>
-                  <TrashIcon className="w-5 h-5 text-red-500" />
-                </button>
-              </td>
+  if (isLoading)
+    return cartItems?.length > 0 ? (
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-normal mb-4 text-center py-1">
+          Your Cart {cartItems.length} Item(s)
+        </h1>
+        <table className="w-full table-auto">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="px-4 py-2">Product</th>
+              <th className="px-4 py-2">Quantity</th>
+              <th className="px-4 py-2">Price</th>
+              <th className="px-4 py-2">Total</th>
+              <th className="px-4 py-2"></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="ml-auto w-1/4 py-8 text-left">
-        <div className="flex justify-between mb-2 px-6">
-          <span>Subtotal:</span>
-          <span id="subtotal">{rupeesSymbol}0</span>
+          </thead>
+          <tbody>
+            {cartItems.map((item, index) => (
+              <tr key={item.id} className="border-b">
+                <td className="border px-4 py-2 text-center">
+                  <div className="flex items-center">
+                    <img
+                      src={item.image_url}
+                      alt={item.name}
+                      className="w-12 h-12 object-contain mr-4"
+                    />
+                    <span>{item.name}</span>
+                  </div>
+                </td>
+                <td className="border px-4 py-2 text-center">
+                  <div className="flex justify-center items-center">
+                    <button
+                      onClick={() => dec(index)}
+                      className="inc-btn px-3 rounded border appearance-none border-gray-400 py-1"
+                    >
+                      -
+                    </button>
+
+                    <CounterDisplay count={item.quantity} />
+
+                    <button
+                      onClick={() => inc(index)}
+                      className="dec-btn px-3 rounded border appearance-none border-gray-400 py-1"
+                    >
+                      +
+                    </button>
+                  </div>
+                </td>
+                <td className="border px-4 py-2  text-center">
+                  ₹&nbsp;{item.sale_price}
+                </td>
+                <td className="border px-4 py-2  text-center">
+                  ₹&nbsp;{item.sale_price * item.quantity}
+                </td>
+                <td className="border px-4 py-2  text-center">
+                  <button onClick={() => handleDeleteItem(item)}>
+                    <TrashIcon className="w-5 h-5 text-red-500" />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="ml-auto w-1/4 py-8 text-left">
+          <div className="flex justify-between mb-2 px-6">
+            <span>Subtotal:</span>
+            <span id="subtotal">{rupeesSymbol}0</span>
+          </div>
+          <div className="flex justify-between mb-2  px-6">
+            <span>Shipping:</span>
+            <span id="shipping"> {rupeesSymbol}0</span>
+          </div>
+          <div className="flex justify-between  px-6">
+            <span>Grand Total:</span>
+            <span id="total"> {rupeesSymbol}0</span>
+          </div>
+          <div className="mt-4 text-right px-5">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() => goToCheckoutPage()}
+            >
+              Checkout
+            </button>
+          </div>
+          <div className="mt-4 text-right px-5">
+            <button
+              className="border border-text-black hover:border-black bg-transparent text-gray-500 hover:text-black py-2 px-4 rounded hover:bg-transparent"
+              onClick={() => clearCartDetails()}
+            >
+              Clear Cart
+            </button>
+          </div>
         </div>
-        <div className="flex justify-between mb-2  px-6">
-          <span>Shipping:</span>
-          <span id="shipping"> {rupeesSymbol}0</span>
+      </div>
+    ) : (
+      <div className="container mx-auto p-4 items-center justify-center">
+        <div className="flex justify-center items-center py-10">
+          <img src="/emptyCart.png" alt="Centered Image" />
         </div>
-        <div className="flex justify-between  px-6">
-          <span>Grand Total:</span>
-          <span id="total"> {rupeesSymbol}0</span>
-        </div>
-        <div className="mt-4 text-right px-5">
+        <h1 className="text-2xl font-normal mb-4 text-center py-1">
+          Your Cart is Empty
+        </h1>
+        <p className="text-sm text-slate-400 font-normal mb-4 text-center">
+          Looks like you have not added anything to you cart. Go ahead & explore
+          categories.
+        </p>
+        <div className="flex justify-center items-center py-10">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => goToCheckoutPage()}
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+            onClick={() => goToHome()}
           >
-            Checkout
+            Continue Shopping
           </button>
         </div>
-        <div className="mt-4 text-right px-5">
-          <button
-            className="border border-text-black hover:border-black bg-transparent text-gray-500 hover:text-black py-2 px-4 rounded hover:bg-transparent"
-            onClick={() => clearCartDetails()}
-          >
-            Clear Cart
-          </button>
-        </div>
       </div>
-    </div>
-  ) : (
-    <div className="container mx-auto p-4 items-center justify-center">
-      <div className="flex justify-center items-center py-10">
-        <img src="/emptyCart.png" alt="Centered Image" />
-      </div>
-      <h1 className="text-2xl font-normal mb-4 text-center py-1">
-        Your Cart is Empty
-      </h1>
-      <p className="text-sm text-lightgray font-normal mb-4 text-center">
-        Looks like you have not added anything to you cart. Go ahead & explore
-        categories.
-      </p>
-      <div className="flex justify-center items-center py-10">
-        <button
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-          onClick={() => goToHome()}
-        >
-          Continue Shopping
-        </button>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default CartPage;

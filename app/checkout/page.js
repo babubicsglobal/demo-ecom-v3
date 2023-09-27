@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -10,6 +10,7 @@ import * as Yup from "yup";
 import { CustomerAPI } from "./../api/customer/getCustomerAPI";
 import OrderSummaryCartList from "./../../components/orderSummary/CartList";
 import { useSession, signOut } from "next-auth/react";
+import { Countries, States } from "../utils/countryData";
 
 const CheckoutPage = () => {
   const [isError, setIsError] = useState(false);
@@ -18,9 +19,30 @@ const CheckoutPage = () => {
   const [getCusValue, setCusValue] = useState([]);
   const [cartItem, setCartItem] = useState([]);
   const { data } = useSession();
+  const [shippingAddress, setShippingAddress] = useState({});
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedState, setSelectedState] = useState("");
+
   const onSubmit = async (data) => {
-    console.log("request.email.data", data);
-    const RegisterUser = [
+    let shippingAddress = {
+      email: data.email,
+      city: data.city,
+      company: data.companyname,
+      country_iso2: data.country_code,
+      first_name: data.first_name,
+      last_name: data.last_name,
+      phone: data.phonenumber,
+      zip: data.postal_code,
+      state: data.state_or_province,
+      street_1: data.address1,
+      street_2: data.address2,
+    };
+
+    setShippingAddress(shippingAddress);
+
+    console.log("ongioo");
+
+    /* const RegisterUser = [
       {
         email: data.email,
         first_name: data.first_name,
@@ -58,6 +80,7 @@ const CheckoutPage = () => {
       },
     ];
 
+   
     const result = await axios
       .post("api/register", RegisterUser)
       .then(function (response) {
@@ -69,29 +92,29 @@ const CheckoutPage = () => {
       .catch(function (error) {
         console.log(error);
         setIsError(true);
-      });
-    // console.log("result", result.data);
-    // if (result.data.id > 0) {
-    //   console.log("Success");
+      });*/
+  };
 
-    // } else {
-    //   console.log("Failier");
-    // }
-    //setCommerceData(result.data.data);
+  const countryOptions = Countries.map((country) => (
+    <option key={country.code} value={country.code}>
+      {country.name}
+    </option>
+  ));
+
+  const stateOptions = selectedCountry ? States[selectedCountry] : [];
+
+  const handleCountryChange = (e) => {
+    setSelectedCountry(e.target.value);
+    setSelectedState("");
+  };
+
+  const handleStateChange = (e) => {
+    setSelectedState(e.target.value);
   };
 
   // form validation rules
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email address is required"),
-    password: Yup.string()
-      .required("Password is required")
-      .min(4, "Password length should be at least 4 characters")
-      .max(12, "Password cannot exceed more than 12 characters"),
-    cpassword: Yup.string()
-      .required("Confirm Password is required")
-      .min(4, "Password length should be at least 4 characters")
-      .max(12, "Password cannot exceed more than 12 characters")
-      .oneOf([Yup.ref("password")], "Passwords do not match"),
     first_name: Yup.string().required("first name is required"),
     last_name: Yup.string().required("last name is required"),
     address1: Yup.string().required("address is required"),
@@ -100,23 +123,15 @@ const CheckoutPage = () => {
     postal_code: Yup.string().required("Postal code is required"),
     country_code: Yup.string().required("Country is required"),
   });
-  const formOptions = { resolver: yupResolver(validationSchema) };
+  const formOptions = {
+    resolver: yupResolver(validationSchema),
+  };
 
   const { register, handleSubmit, watch, formState, reset, getValues } =
     useForm(formOptions);
   const { errors } = formState;
 
   console.log("errors", errors);
-
-  const getCustomerDetails = async (customerId) => {
-    const getCustomerItem = customerData?.find((item) => {
-      return getSessionID === item?.id;
-    });
-    console.log("cus product", getCustomerItem);
-    // setCusValue(cusValue);
-
-    setCusValue(getCustomerItem);
-  };
 
   const getCartDetails = async (cartId) => {
     const request = {
@@ -133,6 +148,25 @@ const CheckoutPage = () => {
       });
   };
 
+  const getCustomerDetails = async (customerId) => {
+    const request = {
+      id: customerId,
+    };
+    const result = await axios
+      .post("../api/getCustomerDetails", request)
+      .then(function (response) {
+        const customerData = response.data.data;
+
+        if (customerData.length > 0) {
+          setCustomerData(customerData[0]);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+        //setIsError(true);
+      });
+  };
+
   useEffect(() => {
     const initTE = async () => {
       const { initTE } = await import("tw-elements");
@@ -140,44 +174,10 @@ const CheckoutPage = () => {
       initTE({ Collapse }); // Call the initTE function with the Collapse component
     };
     initTE();
-
-    getCartDetails(sessionStorage.getItem("cart_id"));
-    var config = { "Access-Control-Allow-Origin": "*" };
-    CustomerAPI(
-      config,
-      (response) => {
-        setCustomerData(response.data.data);
-      },
-      (err) => {
-        //error
-        console.log(err);
-      }
-    );
     setSessionID(+sessionStorage.getItem("customer_Number"));
+    getCartDetails(sessionStorage.getItem("cart_id"));
     getCustomerDetails(sessionStorage.getItem("customer_Number"));
   }, []);
-
-  /*useEffect(() => {
-    getCartDetails(sessionStorage.getItem("cart_id"));
-    var config = { "Access-Control-Allow-Origin": "*" };
-    CustomerAPI(
-      config,
-      (response) => {
-        setCustomerData(response.data.data);
-      },
-      (err) => {
-        //error
-        console.log(err);
-      }
-    );
-    setSessionID(+sessionStorage.getItem("customer_Number"));
-  }, []);
-
-  useEffect(() => {
-    initTE({ Collapse });
-    getCustomerDetails();
-  }, [customerData, getSessionID]);
-  console.log("customerData", customerData, getSessionID, getCusValue);*/
 
   return (
     <section className="bg-gray-100 min-h-screen">
@@ -246,7 +246,7 @@ const CheckoutPage = () => {
                               </div>
                               <div>
                                 <button
-                                  type="submit"
+                                  type="submit1"
                                   className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                 >
                                   Continue
@@ -305,7 +305,7 @@ const CheckoutPage = () => {
                     <form
                       className="space-y-4 md:space-y-6"
                       action="#"
-                      onSubmit={() => handleSubmit(onSubmit)}
+                      onSubmit={handleSubmit(onSubmit)}
                       autoComplete="off"
                     >
                       <div className="flex mb-4">
@@ -322,7 +322,7 @@ const CheckoutPage = () => {
                             {...register("email")}
                             type="text"
                             placeholder="Email Address"
-                            value={getCusValue?.email || ""}
+                            //value={getCusValue?.email || ""}
                           />
                           <div className="invalid-feedback">
                             {errors.email?.message}
@@ -341,7 +341,7 @@ const CheckoutPage = () => {
                             {...register("first_name")}
                             type="text"
                             placeholder="First Name"
-                            value={getCusValue?.first_name || ""}
+                            // value={getCusValue?.first_name || ""}
                           />
                           <div className="invalid-feedback">
                             {errors.first_name?.message}
@@ -363,7 +363,7 @@ const CheckoutPage = () => {
                             {...register("last_name")}
                             type="text"
                             placeholder="Last Name"
-                            value={getCusValue?.last_name || ""}
+                            // value={getCusValue?.last_name || ""}
                           />
                           <div className="invalid-feedback">
                             {errors.last_name?.message}
@@ -382,7 +382,7 @@ const CheckoutPage = () => {
                             {...register("companyname")}
                             type="text"
                             placeholder="Company Name"
-                            value={getCusValue?.company || ""}
+                            // value={getCusValue?.company || ""}
                           />
                         </div>
                       </div>
@@ -465,13 +465,18 @@ const CheckoutPage = () => {
                           >
                             Country<span className="require-star">*</span>
                           </label>
-                          <input
-                            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            id="FormField_11_input"
+
+                          <select
+                            id="country"
+                            name="country"
+                            value={selectedCountry}
                             {...register("country_code")}
-                            type="text"
-                            placeholder="Country"
-                          />
+                            onChange={handleCountryChange}
+                            className="mt-1 block w-full py-3 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          >
+                            <option value="">Select</option>
+                            {countryOptions}
+                          </select>
                           <div className="invalid-feedback">
                             {errors.country_code?.message}
                           </div>
@@ -484,13 +489,21 @@ const CheckoutPage = () => {
                             State/Province
                             <span className="require-star">*</span>
                           </label>
-                          <input
-                            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            id="FormField_12_input"
+                          <select
+                            id="state"
+                            name="state"
+                            value={selectedState}
                             {...register("state_or_province")}
-                            type="text"
-                            placeholder="State/Province"
-                          />
+                            onChange={handleStateChange}
+                            className="mt-1 block w-full py-3 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          >
+                            <option value="">Select</option>
+                            {stateOptions.map((state) => (
+                              <option key={state} value={state}>
+                                {state}
+                              </option>
+                            ))}
+                          </select>
                           <div className="invalid-feedback">
                             {errors.state_or_province?.message}
                           </div>
@@ -770,7 +783,9 @@ const CheckoutPage = () => {
             <OrderSummaryCartList
               cartListData={cartItem ?? []}
               customerId={getSessionID ?? ""}
-              customerData={getCusValue ?? {}}
+              customerData={customerData}
+              shippingAddress={[shippingAddress]}
+              errors={errors}
             />
           </div>
         </div>
