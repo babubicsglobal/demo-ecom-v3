@@ -10,7 +10,10 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [cartId, setCartId] = useState("");
   const [isLoading, setLoading] = useState(false);
-  const [total, setTotal] = useState("");
+  const [total, setTotal] = useState("0");
+  const [shipping, setShipping] = useState("0");
+  const [subtotal, setSubTotal] = useState("0");
+
   const router = useRouter();
   const rupeesSymbol = "₹ ";
 
@@ -65,16 +68,11 @@ const CartPage = () => {
       (acc, item) => acc + item.sale_price * item.quantity,
       0
     );
-
     const shippingCharge = 50;
     const total = +subtotal.toFixed(2);
-
-    document.getElementById("subtotal").textContent =
-      rupeesSymbol + subtotal.toFixed(2);
-    document.getElementById("shipping").textContent =
-      rupeesSymbol + shippingCharge.toFixed(2);
-    document.getElementById("total").textContent =
-      rupeesSymbol + (shippingCharge + total).toFixed(2);
+    setShipping(rupeesSymbol + shippingCharge.toFixed(2));
+    setSubTotal(rupeesSymbol + subtotal.toFixed(2));
+    setTotal(rupeesSymbol + (shippingCharge + total).toFixed(2));
   };
 
   const goToCheckoutPage = () => {
@@ -236,15 +234,15 @@ const CartPage = () => {
         <div className="ml-auto w-1/4 py-8 text-left">
           <div className="flex justify-between mb-2 px-6">
             <span>Subtotal:</span>
-            <span id="subtotal">{rupeesSymbol}0</span>
+            <span>{subtotal}</span>
           </div>
           <div className="flex justify-between mb-2  px-6">
             <span>Shipping:</span>
-            <span id="shipping"> {rupeesSymbol}0</span>
+            <span>{shipping}</span>
           </div>
           <div className="flex justify-between  px-6">
             <span>Grand Total:</span>
-            <span id="total"> {rupeesSymbol}0</span>
+            <span>{total}</span>
           </div>
           <div className="mt-4 text-right px-5">
             <button
