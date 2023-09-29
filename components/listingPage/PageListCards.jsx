@@ -3,18 +3,19 @@ import React, { useMemo } from "react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import axios from "axios";
 
 const PageListCards = ({ bigCommerceData }) => {
-  const bigCommerceProducts = useMemo(() => bigCommerceData, [bigCommerceData]);
-  console.log("bigCommerceProducts", bigCommerceProducts);
-
+  var bigCommerceProducts = useMemo(() => bigCommerceData, [bigCommerceData]);
+  
   return (
     <div className="card-box">
-      {bigCommerceProducts?.length != 0 && (
+      {bigCommerceProducts?.length != 0 && (    
         <div className="bicommerce-box">
           <div className="block text-4xl font-extrabold dark:text-white">
-            <h1 className="mt-20 mb-20">Bigcommerce Products</h1>
+            <h1 className="mt-20 mb-5">Bigcommerce Products</h1>
           </div>
+         
           <div className="flex flex-wrap -mx-1 lg:-mx-4">
             {bigCommerceProducts.map((item, index) => (
               <div

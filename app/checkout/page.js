@@ -39,60 +39,6 @@ const CheckoutPage = () => {
     };
 
     setShippingAddress(shippingAddress);
-
-    console.log("ongioo");
-
-    /* const RegisterUser = [
-      {
-        email: data.email,
-        first_name: data.first_name,
-        last_name: data.last_name,
-        company: data.companyname,
-        phone: data.phonenumber,
-        notes: "",
-        tax_exempt_category: "",
-        customer_group_id: 0,
-        addresses: [
-          {
-            address1: data.address1,
-            address2: data.address2,
-            address_type: "residential",
-            city: data.city,
-            company: data.companyname,
-            country_code: "US",
-            first_name: data.first_name,
-            last_name: data.last_name,
-            phone: data.phonenumber,
-            postal_code: data.postal_code,
-            state_or_province: data.state_or_province,
-            form_fields: [{ name: "test", value: "test" }],
-          },
-        ],
-        authentication: {
-          force_password_reset: true,
-          new_password: data.password,
-        },
-        accepts_product_review_abandoned_cart_emails: true,
-        store_credit_amounts: [{ amount: 43.15 }],
-        origin_channel_id: 1,
-        channel_ids: [1],
-        form_fields: [{ name: "test", value: "test" }],
-      },
-    ];
-
-   
-    const result = await axios
-      .post("api/register", RegisterUser)
-      .then(function (response) {
-        router.push("/login");
-        console.log("Success");
-        console.log("response", response.data);
-        setIsError(false);
-      })
-      .catch(function (error) {
-        console.log(error);
-        setIsError(true);
-      });*/
   };
 
   const countryOptions = Countries.map((country) => (
@@ -127,8 +73,15 @@ const CheckoutPage = () => {
     resolver: yupResolver(validationSchema),
   };
 
-  const { register, handleSubmit, watch, formState, reset, getValues } =
-    useForm(formOptions);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState,
+    reset,
+    getValues,
+    onChange,
+  } = useForm(formOptions);
   const { errors } = formState;
 
   console.log("errors", errors);

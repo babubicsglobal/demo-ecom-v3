@@ -3,31 +3,24 @@ import React from "react";
 import { useContext, useState, useEffect } from "react";
 import { CounterContext } from "./../../app/context/commerceProduct";
 import GlobalConfig from "../../app/globalConfig/config";
+import Search from "../../components/search/Search";
 
 const BannerPage = () => {
   const cfulFilterData = useContext(CounterContext);
-
-  /*const [ProductImage, setProductImage] = useState([]);
-
-  const getProductImage = async () => {
-    for (let i = 0; i < cfulFilterData?.length; i++) {
-      let allProductValue =
-        cfulFilterData[i]?.commerceItem?.images[i]?.url_standard;
-      setProductImage(allProductValue);
-      console.log("allProductValue", allProductValue);
-    }
-  };
-
-  useEffect(() => {
-    getProductImage();
-  }, [cfulFilterData]);*/
-
-  //   const firstImage = cfulFilterData?.commerceItem?.images[0]?.url_standard;
-
   console.log("contextData", cfulFilterData);
+  const [searchResults, setSearchResults] = useState([]);
+
+  const handleSearch = (query) => {
+    const filteredResults = cfulFilterData.filter((item) =>
+      item?.commerceItem?.name.toLowerCase().includes(query.toLowerCase())
+    );
+    console.log("filteredResults", filteredResults);
+    setSearchResults(filteredResults);
+  };
 
   return (
     <section className="w-full h-screen gradient-box overflow-hidden">
+      <Search onSearch={handleSearch} />
       <div className="flex h-full items-center">
         {cfulFilterData.map((item, index) => (
           <div key={index} className="w-3/5">

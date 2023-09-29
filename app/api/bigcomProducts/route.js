@@ -10,12 +10,8 @@ export async function GET(request) {
     headers: GlobalConfig.headers,
     apiVersion: GlobalConfig.apiVersion,
   });
-  // console.log(request, "req value");
-  // const res = await request.json();
-  // console.log(res, "res");
   const products = await bigCommerce.get(
     "/catalog/products?include=images,variants"
   );
-
   return NextResponse.json(products);
 }
