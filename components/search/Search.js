@@ -9,7 +9,7 @@ const Search = ({ onSearch }) => {
   };
 
   return (
-    <div className="flex items-center space-x-2 w-full py-5">
+    <div className="flex items-center space-x-2 w-full py-5 px-4">
       <input
         type="text"
         placeholder="Search..."
