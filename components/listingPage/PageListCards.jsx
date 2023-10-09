@@ -46,7 +46,7 @@ const PageListCards = ({ bigCommerceData }) => {
                         <span>
                           <span className="a-price-symbol">₹&nbsp;</span>
 
-                          {item?.commerceItem?.price}
+                          {item?.commerceItem?.sale_price}
                         </span>
                         <span>
                           {" "}

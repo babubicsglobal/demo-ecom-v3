@@ -12,9 +12,17 @@ export async function POST(request) {
   });
   console.log(request, "request");
   const res = await request.json();
-  console.log(res.searchKey, "resquery");
-  const products = await bigCommerce.get(
-    `/catalog/products?keyword=${res.searchKey}&include=images,variants`
-  );
-  return NextResponse.json(products);
+  console.log(res, "resquery");
+  if(res.from === "filter"){
+    const products = await bigCommerce.get(
+      `/catalog/products?price:min=${res.minPrice}&price:max=${res.maxPrice}&include=images,variants`
+    );
+    return NextResponse.json(products);
+  }else{
+    const products = await bigCommerce.get(
+      `/catalog/products?keyword=${res.searchKey}&include=images,variants`
+    );
+    return NextResponse.json(products);
+  }
+ 
 }
