@@ -139,76 +139,40 @@ const CheckoutPage = () => {
           <div className="col-span-2 px-3 bg-white">
             <div id="accordionExample" className="my-6">
               <div className="rounded-t-lg border-b-2 border-neutral-200 bg-white dark:border-neutral-600 dark:bg-neutral-800">
-                <h2 className="mb-0" id="headingOne">
-                  <button
-                    className="group relative flex w-full items-center rounded-t-[15px] border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800 dark:text-white "
-                    type="button"
-                    data-te-collapse-init
-                    data-te-target="#collapseOne"
-                    aria-expanded="true"
-                    aria-controls="collapseOne"
-                  >
-                    <div className="checkout-view-header py-2">
-                      <h2 className="mb-0 mt-0 text-2xl font-bold leading-tight text-primary">
-                        Customer
-                      </h2>
-                    </div>
-                    <span className="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-blue-300 dark:group-[[data-te-collapse-collapsed]]:fill-white">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="h-6 w-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                        />
-                      </svg>
-                    </span>
-                  </button>
-                </h2>
-                <div
-                  id="collapseOne"
-                  className="!visible"
-                  data-te-collapse-item
-                  data-te-collapse-show
-                  aria-labelledby="headingOne"
-                  data-te-parent="#accordionExample"
-                >
-                  <div className="px-5 py-4">
-                    <div className="checkout-step optimizedCheckout-checkoutStep checkout-step--customer">
-                      <div className="loading-skeleton">
-                        {data?.user ? (
-                          <span style={{ marginRight: "15px" }}>
-                            {data?.user?.email}
-                          </span>
-                        ) : (
-                          <form>
-                            <div className="grid gap-6 mb-6 md:grid-cols-2">
-                              <div>
-                                <input
-                                  type="text"
-                                  id="first_name"
-                                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                  placeholder="Email"
-                                />
-                              </div>
-                              <div>
-                                <button
-                                  type="submit1"
-                                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                >
-                                  Continue
-                                </button>
-                              </div>
+                <div className="checkout-view-header py-2 px-5">
+                  <h2 className="mb-0 mt-0 text-2xl font-bold leading-tight text-primary">
+                    Customer
+                  </h2>
+                </div>
+                <div className="px-5 py-4">
+                  <div className="checkout-step optimizedCheckout-checkoutStep checkout-step--customer">
+                    <div className="loading-skeleton">
+                      {data?.user ? (
+                        <span style={{ marginRight: "15px" }}>
+                          {data?.user?.email}
+                        </span>
+                      ) : (
+                        <form>
+                          <div className="grid gap-6 mb-6 md:grid-cols-2">
+                            <div>
+                              <input
+                                type="text"
+                                id="first_name"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Email"
+                              />
                             </div>
-                          </form>
-                        )}
-                      </div>
+                            <div>
+                              <button
+                                type="submit1"
+                                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                              >
+                                Continue
+                              </button>
+                            </div>
+                          </div>
+                        </form>
+                      )}
                     </div>
                   </div>
                 </div>
