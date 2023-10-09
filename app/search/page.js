@@ -40,12 +40,12 @@ const SearchProductsPage = ({ params }) => {
   const handleSelect = (option) => {
     setSelectedOption(option);
     setIsOpen(false);
-    console.log("mainData", mainData);
+
     if (option.value === "featured") {
       const items = mainData.filter(
         (item) => item?.commerceItem?.is_featured === true
       );
-      console.log("featured", items);
+
       setCfulFilterData(items);
     } else if (option.value === "newest") {
       const items = mainData.filter(
@@ -56,7 +56,7 @@ const SearchProductsPage = ({ params }) => {
       const sortedData = mainData.sort((a, b) =>
         a.commerceItem.name.localeCompare(b.commerceItem.name)
       );
-      console.log("sortedData", sortedData);
+
       setCfulFilterData(sortedData);
     } else if (option.value === "alphadesc") {
       const items = mainData.sort((a, b) =>
@@ -69,7 +69,7 @@ const SearchProductsPage = ({ params }) => {
           parseFloat(a.commerceItem.sale_price) -
           parseFloat(b.commerceItem.sale_price)
       );
-      console.log("Sortt", item);
+
       setCfulFilterData(item);
     } else if (option.value === "pricedesc") {
       const items = mainData.sort(
@@ -77,7 +77,7 @@ const SearchProductsPage = ({ params }) => {
           parseFloat(b.commerceItem.sale_price) -
           parseFloat(a.commerceItem.sale_price)
       );
-      console.log("Sortt", items);
+
       setCfulFilterData(items);
     }
   };
@@ -94,9 +94,9 @@ const SearchProductsPage = ({ params }) => {
       minPrice: newFilter.min,
       maxPrice: newFilter.max,
     };
-    console.log("request filter", request);
+
     getBigcomProducts(request);
-    setPopoverOpen(!isPopoverOpen);
+    // setPopoverOpen(!isPopoverOpen);
   };
 
   const handleSearch = (query) => {
