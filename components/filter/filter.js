@@ -3,7 +3,7 @@ import PriceFilter from "../../components/filter/PriceFilter";
 
 const Filter = ({ onClick, isPopoverOpen, handleFilterChange }) => {
   return (
-    <div className="relative inline-block">
+    <div class="relative inline-block px-40 right-0 top-0 py-7">
       {/* Filter Icon */}
       <button onClick={onClick}>
         <img src="/filter.png" alt="filter" width="25" height="25" />

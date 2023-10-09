@@ -68,7 +68,7 @@ const CartPage = () => {
       (acc, item) => acc + item.sale_price * item.quantity,
       0
     );
-    const shippingCharge = 50;
+    const shippingCharge = 50.0;
     const total = +subtotal.toFixed(2);
     setShipping(rupeesSymbol + shippingCharge.toFixed(2));
     setSubTotal(rupeesSymbol + subtotal.toFixed(2));
@@ -217,10 +217,10 @@ const CartPage = () => {
                   </div>
                 </td>
                 <td className="border px-4 py-2  text-center">
-                  ₹&nbsp;{item.sale_price}
+                  ₹&nbsp;{item.sale_price.toFixed(2)}
                 </td>
                 <td className="border px-4 py-2  text-center">
-                  ₹&nbsp;{item.sale_price * item.quantity}
+                  ₹&nbsp;{(item.sale_price * item.quantity).toFixed(2)}
                 </td>
                 <td className="border px-4 py-2  text-center">
                   <button onClick={() => handleDeleteItem(item)}>
