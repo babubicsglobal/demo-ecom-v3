@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const PriceFilter = ({ minPrice, maxPrice, onFilterChange }) => {
   const [min, setMin] = useState(minPrice);
@@ -6,15 +6,18 @@ const PriceFilter = ({ minPrice, maxPrice, onFilterChange }) => {
 
   const handleMinChange = (e) => {
     const newMin = parseFloat(e.target.value);
+    console.log("newMin", newMin);
     setMin(newMin);
   };
 
   const handleMaxChange = (e) => {
     const newMax = parseFloat(e.target.value);
+    console.log("newMax", newMax);
     setMax(newMax);
   };
 
   const handleFilterClick = () => {
+    console.log("max", max);
     onFilterChange({ min, max });
   };
 
