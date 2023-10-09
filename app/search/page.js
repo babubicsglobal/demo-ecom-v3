@@ -23,7 +23,7 @@ const SearchProductsPage = ({ params }) => {
     // { value: 'bestselling', label: 'Best Selling' },
     { value: "alphaasc", label: "A to Z" },
     { value: "alphadesc", label: "Z to A" },
-    // { value: 'avgcustomerreview', label: 'By Review' },
+    { value: "avgcustomerreview", label: "By Review" },
     { value: "priceasc", label: "Price: Ascending" },
     { value: "pricedesc", label: "Price: Descending" },
     //// { value: 'relevance', label: 'Relevance' },
@@ -49,7 +49,7 @@ const SearchProductsPage = ({ params }) => {
       setCfulFilterData(items);
     } else if (option.value === "newest") {
       const items = mainData.filter(
-        (item) => item?.commerceItem?.condition === "new"
+        (item) => item?.commerceItem?.condition.toLowerCase() === "new"
       );
       setCfulFilterData(items);
     } else if (option.value === "alphaasc") {
@@ -76,6 +76,14 @@ const SearchProductsPage = ({ params }) => {
         (a, b) =>
           parseFloat(b.commerceItem.sale_price) -
           parseFloat(a.commerceItem.sale_price)
+      );
+
+      setCfulFilterData(items);
+    } else if (option.value === "avgcustomerreview") {
+      const items = mainData.sort(
+        (a, b) =>
+          parseFloat(b.commerceItem.reviews_count) -
+          parseFloat(a.commerceItem.reviews_count)
       );
 
       setCfulFilterData(items);

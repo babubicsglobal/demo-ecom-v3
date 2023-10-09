@@ -10,97 +10,18 @@ const OrderSummaryList = ({
   customerId,
   customerData,
   shippingAddress,
-  errors
+  errors,
+  
 }) => {
   const router = useRouter();
   const rupeesSymbol = "₹";
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   useEffect(() => {
     calculateOrderSummary();
   }, [cartListData]);
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    router.push("/home");
-  };
-
-  const handlePlaceOrder = async () => {
- if(Object.keys(errors).length == 0 ){
-   
-    var productsData = [];
-    for (let i = 0; i < cartListData.length; i++) {
-      let product = {
-        product_id: cartListData[i]?.product_id,
-        quantity: cartListData[i]?.quantity,
-        variant_id: cartListData[i]?.variant_id,
-      };
-      console.log("product", product);
-      productsData.push(product);
-    }
-
-    const billingAddress = {
-      first_name: customerData.first_name,
-      last_name:customerData.last_name,
-      street_1: customerData.addresses[0]?.address1,
-      street_2: customerData.addresses[0]?.address2,
-      city: customerData.addresses[0]?.city,
-      state: customerData.addresses[0]?.state_or_province,
-      zip: customerData.addresses[0]?.postal_code,
-      country: customerData.addresses[0]?.country,
-      country_iso2: customerData.addresses[0]?.country_code,
-      email: customerData.email,
-    };
-    const CreateOrder = {
-      status_id: 0,
-      customer_id: customerId,
-      products: productsData,
-      billing_address: billingAddress,
-      shipping_addresses: shippingAddress,
-      payment_method : "Test Payment Gateway"
-    };
-
-    console.log("CreateOrder", CreateOrder);
-
-    const result = await axios
-      .post("../api/createOrder", CreateOrder)
-      .then(function (response) {
-        console.log("Order Response", response.data);
-       // createToken(response.data.id);
-        sessionStorage.removeItem("cart_id");
-         setIsModalOpen(true);
-      })
-      .catch(function (error) {
-        console.log(error);
-        //setIsError(true);
-      });
-  
-   }else{
-    alert("Please enter shipping address")
-    }
-  };
-
-  const createToken = async (orderId) => {
-    let requestData = {
-      order: {
-        id: orderId,
-        is_recurring: false,
-      },
-    };
-    console.log("createToken", requestData);
-    const result = await axios
-      .post("../api/createToken", requestData)
-      .then(function (response) {
-        console.log("Token Resssponse", response.data);
-        console.log("PAT", response.data.data.id);
-        handlePayment(response.data.data.id);
-      })
-      .catch(function (error) {
-        console.log(error);
-        //setIsError(true);
-      });
-  };
-
+ 
   const handlePayment = async (PAToken) => {
     const paymentRequest1 = {
       payment: {
@@ -358,16 +279,6 @@ const OrderSummaryList = ({
           </div>
         </li>
       </ul>
-
-      <div className="text-center">
-        <button
-          className="bg-blue-500 text-white rounded-full mt-4 py-2 px-6 hover:bg-blue-600 text-center"
-          onClick={handlePlaceOrder}
-        >
-          Place Order
-        </button>{" "}
-        <OrderSuccessModal isOpen={isModalOpen} onClose={handleCloseModal} />
-      </div>
     </div>
   );
 };
