@@ -118,7 +118,7 @@ const CheckoutPage = () => {
       .post("../api/getCustomerDetails", request)
       .then(function (response) {
         const customerData = response.data.data;
-
+        console.log("Customer Address", response.data.data);
         if (customerData.length > 0) {
           setCustomerData(customerData[0]);
         }
@@ -138,7 +138,7 @@ const CheckoutPage = () => {
     initTE();
     setSessionID(+sessionStorage.getItem("customer_Number"));
     getCartDetails(sessionStorage.getItem("cart_id"));
-    getCustomerDetails(sessionStorage.getItem("customer_Number"));
+    getCustomerDetails(+sessionStorage.getItem("customer_Number"));
   }, []);
 
   const handleCloseModal = () => {
@@ -178,13 +178,13 @@ const CheckoutPage = () => {
         billingAddress = {
           first_name: customerData.first_name,
           last_name: customerData.last_name,
-          street_1: customerData.addresses[0]?.address1,
-          street_2: customerData.addresses[0]?.address2,
-          city: customerData.addresses[0]?.city,
-          state: customerData.addresses[0]?.state_or_province,
-          zip: customerData.addresses[0]?.postal_code,
-          country: customerData.addresses[0]?.country,
-          country_iso2: customerData.addresses[0]?.country_code,
+          street_1: customerData?.addresses[0]?.address1,
+          street_2: customerData?.addresses[0]?.address2,
+          city: customerData?.addresses[0]?.city,
+          state: customerData?.addresses[0]?.state_or_province,
+          zip: customerData?.addresses[0]?.postal_code,
+          country: customerData?.addresses[0]?.country,
+          country_iso2: customerData?.addresses[0]?.country_code,
           email: customerData.email,
         };
       }
@@ -246,40 +246,40 @@ const CheckoutPage = () => {
             <div className="col-span-2 px-3 bg-white">
               <div id="accordionExample" className="my-6">
                 <div className="rounded-t-lg border-b-2 border-neutral-200 bg-white dark:border-neutral-600 dark:bg-neutral-800">
-                  <div className="checkout-view-header py-2 px-5">
+                  <div className="flex checkout-view-header py-2 px-5">
                     <h2 className="mb-0 mt-0 text-2xl font-bold leading-tight text-primary">
                       Customer
                     </h2>
-                  </div>
-                  <div className="px-5 py-4">
-                    <div className="checkout-step optimizedCheckout-checkoutStep checkout-step--customer">
-                      <div className="loading-skeleton">
-                        {data?.user ? (
-                          <span style={{ marginRight: "15px" }}>
-                            {data?.user?.email}
-                          </span>
-                        ) : (
-                          <form>
-                            <div className="grid gap-6 mb-6 md:grid-cols-2">
-                              <div>
-                                <input
-                                  type="text"
-                                  id="first_name"
-                                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                  placeholder="Email"
-                                />
+                    <div className="px-5 py-1">
+                      <div className="checkout-step optimizedCheckout-checkoutStep checkout-step--customer">
+                        <div className="loading-skeleton">
+                          {data?.user ? (
+                            <span className="font-semibold text-blue-800">
+                              {data?.user?.email}
+                            </span>
+                          ) : (
+                            <form>
+                              <div className="grid gap-6 mb-6 md:grid-cols-2">
+                                <div>
+                                  <input
+                                    type="text"
+                                    id="first_name"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Email"
+                                  />
+                                </div>
+                                <div>
+                                  <button
+                                    type="submit1"
+                                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                  >
+                                    Continue
+                                  </button>
+                                </div>
                               </div>
-                              <div>
-                                <button
-                                  type="submit1"
-                                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                >
-                                  Continue
-                                </button>
-                              </div>
-                            </div>
-                          </form>
-                        )}
+                            </form>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>

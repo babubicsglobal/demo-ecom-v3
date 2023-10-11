@@ -13,4 +13,5 @@ module.exports = {
   },
 
   apiVersion: "v3",
+  allProductData: [],
 };

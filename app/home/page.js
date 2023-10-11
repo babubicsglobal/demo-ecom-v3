@@ -8,10 +8,7 @@ import ImageSlider from "../../components/imageSlider/imageSlider";
 function HomePage() {
   return (
     <div className="container mx-auto">
-      <MultiValueContextDemo>
-        <ImageSlider />
-      </MultiValueContextDemo>
-
+      <ImageSlider />
       <ProductsCategoryPage></ProductsCategoryPage>
     </div>
   );

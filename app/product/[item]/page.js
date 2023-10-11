@@ -41,7 +41,22 @@ function ProductDetailpage({ params }) {
     setproductDetail(result.data.data);
   };
 
-  //   const getMasterId = useMemo(() => productItem, [productItem]);
+  function checkStock(quantity) {
+    // if (productList[0]?.order_quantity_maximum >= quantity) {
+    if (100 >= quantity) {
+      if (productList[0]?.inventory_level <= quantity) {
+        alert(
+          `Low stock for ${productList[0]?.name}. Available Stock ${productList[0]?.inventory_level}`
+        );
+      } else {
+        handleSubmit();
+      }
+    } else {
+      alert(
+        `Your are exceeding maximum order quantity of ${productList[0]?.order_quantity_maximum}`
+      );
+    }
+  }
 
   const getProductBySku = async () => {
     const productSlug = `${params?.item}`;
@@ -109,7 +124,8 @@ function ProductDetailpage({ params }) {
           //setIsError(false);
         })
         .catch(function (error) {
-          console.log(error);
+          console.log("error,err", error);
+          //  alert(error.title);
           //setIsError(true);
         });
     } else {
@@ -137,7 +153,8 @@ function ProductDetailpage({ params }) {
           //setIsError(false);
         })
         .catch(function (error) {
-          console.log(error);
+          console.log("error,err", error);
+          // alert(error.title);
           //setIsError(true);
         });
     }
@@ -171,6 +188,7 @@ function ProductDetailpage({ params }) {
   //console.log("rating", rating);
 
   console.log("customerID", sessionItem);
+
   return (
     <section className="text-gray-700 body-font overflow-hidden bg-white">
       <div className="container px-5 py-24 mx-auto">
@@ -210,83 +228,124 @@ function ProductDetailpage({ params }) {
             </div>
             <div
               className="leading-relaxed text-base"
-              dangerouslySetInnerHTML={{ __html: productList[0]?.description }}
+              dangerouslySetInnerHTML={{
+                __html: productList[0]?.description,
+              }}
             ></div>
 
-            <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
-              <div className="flex ml-6 items-center">
-                <span className="mr-3">Size</span>
-                <div className="relative">
-                  <select className="rounded border appearance-none border-gray-400 py-2 focus:outline-none focus:border-red-500 text-base pl-3 pr-10">
-                    {productList[0]?.variants.map((item, index) => (
-                      <option key={index}>
-                        {item.option_values[0]?.label}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
-                    <svg
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="w-4 h-4"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M6 9l6 6 6-6"></path>
-                    </svg>
+            {productList[0]?.inventory_level == 0 ? (
+              <p className="text-red-600 text-lg py-2">Out of Stock</p>
+            ) : productList[0]?.inventory_level <=
+              productList[0]?.inventory_warning_level ? (
+              <p className="text-red-600 text-sm py-2">
+                Only {productList[0]?.inventory_level} left in stock.. Order
+                Soon!
+              </p>
+            ) : (
+              <div></div>
+            )}
+
+            {productList[0]?.inventory_level > 0 ? (
+              <div>
+                <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
+                  <div className="flex ml-6 items-center">
+                    <span className="mr-3">Size</span>
+                    <div className="relative">
+                      <select className="rounded border appearance-none border-gray-400 py-2 focus:outline-none focus:border-red-500 text-base pl-3 pr-10">
+                        {productList[0]?.variants.map((item, index) => (
+                          <option key={index}>
+                            {item.option_values[0]?.label}
+                          </option>
+                        ))}
+                      </select>
+                      <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
+                        <svg
+                          fill="none"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          className="w-4 h-4"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M6 9l6 6 6-6"></path>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex ml-6 items-center">
+                    <span className="mr-3">Quantity</span>
+                    <div className="relative">
+                      <div className="flex">
+                        <button
+                          onClick={dec}
+                          className="inc-btn px-3 rounded border appearance-none border-gray-400 py-1"
+                        >
+                          -
+                        </button>
+
+                        <CounterDisplay count={count} />
+
+                        <button
+                          onClick={inc}
+                          className="dec-btn px-3 rounded border appearance-none border-gray-400 py-1"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex">
+                  <span className="title-font font-medium text-2xl text-gray-900">
+                    <div className="price-counter">
+                      <div>
+                        <span className="a-price-symbol">₹&nbsp;</span>
+                        <span className="text-5xl">
+                          {productList[0]?.price}
+                        </span>
+                        <span>
+                          <span className="a-price-symbol">
+                            &nbsp;&nbsp;M.R.P&nbsp;
+                          </span>
+
+                          <span className="line-through">
+                            {productList[0]?.price * 10}
+                          </span>
+                        </span>
+                      </div>
+                    </div>
                   </span>
+                  <button
+                    onClick={() => checkStock(count)}
+                    className="flex ml-auto text-white bg-blue-900 border-0 py-2 px-6 rounded"
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               </div>
-              <div className="flex ml-6 items-center">
-                <span className="mr-3">Quantity</span>
-                <div className="relative">
-                  <div className="flex">
-                    <button
-                      onClick={dec}
-                      className="inc-btn px-3 rounded border appearance-none border-gray-400 py-1"
-                    >
-                      -
-                    </button>
+            ) : (
+              <div className="flex">
+                <span className="title-font font-medium text-2xl text-gray-900">
+                  <div className="price-counter">
+                    <div>
+                      <span className="a-price-symbol">₹&nbsp;</span>
+                      <span className="text-5xl">{productList[0]?.price}</span>
+                      <span>
+                        <span className="a-price-symbol">
+                          &nbsp;&nbsp;M.R.P&nbsp;
+                        </span>
 
-                    <CounterDisplay count={count} />
-
-                    <button
-                      onClick={inc}
-                      className="dec-btn px-3 rounded border appearance-none border-gray-400 py-1"
-                    >
-                      +
-                    </button>
+                        <span className="line-through">
+                          {productList[0]?.price * 10}
+                        </span>
+                      </span>
+                    </div>
                   </div>
-                </div>
+                </span>
               </div>
-            </div>
-            <div className="flex">
-              <span className="title-font font-medium text-2xl text-gray-900">
-                <div className="price-counter">
-                  <div>
-                    <span className="a-price-symbol">₹&nbsp;</span>
-                    <span className="text-5xl">{productList[0]?.price}</span>
-                    <span>
-                      <span className="a-price-symbol">
-                        &nbsp;&nbsp;M.R.P&nbsp;
-                      </span>
-
-                      <span className="line-through">
-                        {productList[0]?.price * 10}
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </span>
-              <button
-                onClick={handleSubmit}
-                className="flex ml-auto text-white bg-blue-900 border-0 py-2 px-6 rounded"
-              >
-                Add to Cart
-              </button>
-            </div>
+            )}
           </div>
         </div>
       </div>

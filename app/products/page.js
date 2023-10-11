@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { client } from "./../../lib/contentful/client";
 import PageListCards from "../../components/listingPage/PageListCards";
 import axios from "axios";
+import Global from "./../globalConfig/config";
 
 const ProductsCategoryPage = ({ params }) => {
   console.log("params", params);
@@ -35,7 +36,9 @@ const ProductsCategoryPage = ({ params }) => {
     const updatedBigcomProducts = newProducts.filter(
       (item) => item.commerceItem
     );
+
     setCfulFilterData(updatedBigcomProducts);
+    Global.allProductData = updatedBigcomProducts;
   };
 
   useEffect(() => {

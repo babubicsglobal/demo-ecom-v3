@@ -31,6 +31,7 @@ function Header() {
               <Link href="/cartDetail" className="px-2">
                 <img src="/cartIcon.png" alt="Cart" width="34" height="34" />
               </Link>
+
               <span style={{ marginRight: "15px" }}>{data?.user?.email}</span>
 
               <button
@@ -135,17 +136,19 @@ function Header() {
                   About Us
                 </a>
               </li>
-            {data?.user ? 
-               ( <li>
-                <a
-                  href="/orderListing"
-                  className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  Orders
-                </a>
-              </li>) : (<div></div>)
-            }
-             <Link href="/search" className="py-1">
+              {data?.user ? (
+                <li>
+                  <a
+                    href="/orderListing"
+                    className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+                  >
+                    Orders
+                  </a>
+                </li>
+              ) : (
+                <div></div>
+              )}
+              <Link href="/search" className="py-1">
                 <img src="/search.png" alt="Search" width="20" height="20" />
               </Link>
             </ul>

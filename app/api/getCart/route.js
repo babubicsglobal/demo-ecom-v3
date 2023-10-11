@@ -13,7 +13,9 @@ export async function POST(request) {
   console.log(request, "req value");
   const res = await request.json();
   console.log(res.id, "carts");
-  const getCartData = await bigCommerce.get(`/carts/${res.id}`);
+  const getCartData = await bigCommerce.get(
+    `/carts/${res.id}?include=inventory`
+  );
 
   return NextResponse.json(getCartData);
 }

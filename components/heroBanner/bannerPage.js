@@ -4,11 +4,10 @@ import { useContext, useState, useEffect } from "react";
 import { CounterContext } from "./../../app/context/commerceProduct";
 import GlobalConfig from "../../app/globalConfig/config";
 
-
 const BannerPage = () => {
   const cfulFilterData = useContext(CounterContext);
   console.log("contextData", cfulFilterData);
-  
+
   return (
     <section className="w-full h-screen gradient-box overflow-hidden">
       <div className="flex h-full items-center">

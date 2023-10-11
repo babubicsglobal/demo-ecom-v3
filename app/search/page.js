@@ -165,7 +165,7 @@ const SearchProductsPage = ({ params }) => {
   }, []);
 
   return (
-    <div>
+    <div className="px-10">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
         <div className="col-span-1 md:col-span-1 lg:col-span-1">
           {" "}

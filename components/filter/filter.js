@@ -4,9 +4,12 @@ import PriceFilter from "../../components/filter/PriceFilter";
 const Filter = ({ onClick, isPopoverOpen, handleFilterChange }) => {
   return (
     <div class="relative inline-block px-40 right-0 top-0 py-7">
-      {/* Filter Icon */}
-      <button onClick={onClick}>
+      <button
+        className="flex items-center space-x-2   text-black py-1 px-4 rounded"
+        onClick={onClick}
+      >
         <img src="/filter.png" alt="filter" width="25" height="25" />
+        <span>Filter</span>
       </button>
 
       {/* Popover Content */}

@@ -1,10 +1,12 @@
 "use client"; // This is a client component
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { request } from "http";
+import { CounterContext } from "./../../app/context/commerceProduct";
+import Global from "./../globalConfig/config";
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -17,10 +19,39 @@ const CartPage = () => {
   const router = useRouter();
   const rupeesSymbol = "₹ ";
 
+  const allProductData = Global.allProductData;
+  console.log("allProductData", allProductData);
+
   useEffect(() => {
     getCartDetails(sessionStorage.getItem("cart_id"));
     setCartId(sessionStorage.getItem("cart_id"));
   }, []);
+
+  function checkStock(index) {
+    let filterData = allProductData.filter(
+      (item) => item.commerceItem.id === cartItems[index].product_id
+    );
+
+    if (filterData.length > 0) {
+      let productList = filterData[0];
+      console.log("filtereddata", filterData);
+      if (100 >= cartItems[index].quantity) {
+        if (
+          productList.commerceItem.inventory_level <= cartItems[index].quantity
+        ) {
+          alert(
+            `Low stock for ${productList.commerceItem.name}. Available Stock ${productList.commerceItem.inventory_level}`
+          );
+        } else {
+          inc(index);
+        }
+      } else {
+        alert(
+          `Your are exceeding maximum order quantity of ${productList.commerceItem.order_quantity_maximum}`
+        );
+      }
+    }
+  }
 
   const inc = (index) => {
     console.log("index", index);
@@ -209,7 +240,7 @@ const CartPage = () => {
                     <CounterDisplay count={item.quantity} />
 
                     <button
-                      onClick={() => inc(index)}
+                      onClick={() => checkStock(index)}
                       className="dec-btn px-3 rounded border appearance-none border-gray-400 py-1"
                     >
                       +

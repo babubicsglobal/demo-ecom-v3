@@ -31,13 +31,13 @@ const ImageSlider = () => {
   };
 
   return (
-    <div className="relative h-64">
+    <div className="relative h-80">
       {images.map((image, index) => (
         <img
           key={index}
           src={image}
           alt={`Image ${index}`}
-          className={`absolute w-full h-full transition-opacity duration-500 ${
+          className={`absolute w-full h-80 object-center transition-opacity duration-500 ${
             index === currentImage ? "opacity-100" : "opacity-0"
           }`}
         />
