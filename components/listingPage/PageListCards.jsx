@@ -4,18 +4,19 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import axios from "axios";
+import { calculateDiscount } from "../../app/utils/calculateDiscountPercentage";
 
 const PageListCards = ({ bigCommerceData }) => {
   var bigCommerceProducts = useMemo(() => bigCommerceData, [bigCommerceData]);
-  
+
   return (
     <div className="card-box">
-      {bigCommerceProducts?.length != 0 && (    
+      {bigCommerceProducts?.length != 0 && (
         <div className="bicommerce-box">
           <div className="block text-4xl font-extrabold dark:text-white">
             <h1 className="mt-20 mb-5">Bigcommerce Products</h1>
           </div>
-         
+
           <div className="flex flex-wrap -mx-1 lg:-mx-4">
             {bigCommerceProducts.map((item, index) => (
               <div
@@ -24,12 +25,28 @@ const PageListCards = ({ bigCommerceData }) => {
               >
                 <article className="overflow-hidden rounded-lg shadow-lg card-list">
                   <Link href={`product/${item?.commerceItem?.custom_url?.url}`}>
-                    <img
-                      alt="Placeholder"
-                      className="block h-72 w-full object-contain"
-                      //src={item.fields.productImage[0].fields.file.url}
-                      src={item?.commerceItem?.images[0]?.url_standard}
-                    />
+                    <div className="relative ">
+                      <img
+                        alt="Placeholder"
+                        className="block h-72 w-full object-contain"
+                        //src={item.fields.productImage[0].fields.file.url}
+                        src={item?.commerceItem?.images[0]?.url_standard}
+                      />
+
+                      {calculateDiscount(
+                        item?.commerceItem?.price,
+                        item?.commerceItem?.sale_price
+                      ) > 0 ? (
+                        <div className="absolute top-2 left-2 p-2 bg-red-500 text-white rounded-full text-xs">
+                          {calculateDiscount(
+                            item?.commerceItem?.price,
+                            item?.commerceItem?.sale_price
+                          )}{"%"}
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
+                    </div>
                   </Link>
                   <div className="card-bodylist bg-primary">
                     <header className="flex justify-between leading-tight p-2 md:p-4 flex-col">

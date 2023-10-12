@@ -8,6 +8,7 @@ import { CustomerAPI } from "./../../api/customer/getCustomerAPI";
 import { Linden_Hill } from "next/font/google";
 import GlobalConfig from "./../../globalConfig/config";
 import { Rating } from "react-simple-star-rating";
+import { calculateDiscount } from "../../utils/calculateDiscountPercentage";
 
 function ProductDetailpage({ params }) {
   console.log("params", params);
@@ -16,8 +17,10 @@ function ProductDetailpage({ params }) {
   const [productList, setproductList] = useState([]);
   const [sessionItem, setsessionItem] = useState("");
   const [productDetail, setproductDetail] = useState([]);
+
   const [count, setCount] = useState(1);
   const [rating, setRating] = useState("");
+  const [discount, setDiscount] = useState(0);
 
   //   const getProductItemKey = async () => {
   //     setproductItem(cfulFilterData);
@@ -72,6 +75,16 @@ function ProductDetailpage({ params }) {
         : true
     );
     setproductList(filteredProduct);
+    let value = calculateDiscount(
+      filteredProduct[0]?.price ?? 0,
+      filteredProduct[0]?.sale_price ?? 0
+    );
+
+    if (!isNaN(value)) {
+      console.log("value", value);
+      setDiscount(value);
+    }
+
     setRating(
       filteredProduct[0]?.reviews_rating_sum / filteredProduct[0]?.reviews_count
     );
@@ -87,7 +100,7 @@ function ProductDetailpage({ params }) {
         quantity: count,
         product_id: productList[0]?.id,
         variant_id: productList[0]?.variants[0]?.id,
-        list_price: productList[0]?.price,
+        list_price: productList[0]?.sale_price,
         name: productList[0]?.name,
         option_selections: [
           {
@@ -209,6 +222,14 @@ function ProductDetailpage({ params }) {
             <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
               {productList[0]?.name}
             </h1>
+            {discount > 0 ? (
+              <h2 className="text-base title-font text-red-500 tracking-widest pb-2">
+                {discount}
+                {"% OFF"}
+              </h2>
+            ) : (
+              <div></div>
+            )}
             <div className="flex mb-4">
               <span className="flex items-center">
                 <div
@@ -307,7 +328,7 @@ function ProductDetailpage({ params }) {
                       <div>
                         <span className="a-price-symbol">₹&nbsp;</span>
                         <span className="text-5xl">
-                          {productList[0]?.price}
+                          {productList[0]?.sale_price}
                         </span>
                         <span>
                           <span className="a-price-symbol">
@@ -315,7 +336,7 @@ function ProductDetailpage({ params }) {
                           </span>
 
                           <span className="line-through">
-                            {productList[0]?.price * 10}
+                            {productList[0]?.price}
                           </span>
                         </span>
                       </div>
@@ -335,14 +356,16 @@ function ProductDetailpage({ params }) {
                   <div className="price-counter">
                     <div>
                       <span className="a-price-symbol">₹&nbsp;</span>
-                      <span className="text-5xl">{productList[0]?.price}</span>
+                      <span className="text-5xl">
+                        {productList[0]?.sale_price}
+                      </span>
                       <span>
                         <span className="a-price-symbol">
                           &nbsp;&nbsp;M.R.P&nbsp;
                         </span>
 
                         <span className="line-through">
-                          {productList[0]?.price * 10}
+                          {productList[0]?.price}
                         </span>
                       </span>
                     </div>
