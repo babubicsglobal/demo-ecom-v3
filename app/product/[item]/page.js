@@ -25,7 +25,7 @@ function ProductDetailpage({ params }) {
 
   const inc = (event) => {
     console.log("btn", event.target);
-    setCount(count + 1);
+    checkStock(count + 1, "inc");
   };
 
   const dec = () => {
@@ -41,15 +41,19 @@ function ProductDetailpage({ params }) {
     setproductDetail(result.data.data);
   };
 
-  function checkStock(quantity) {
+  function checkStock(quantity, from) {
     // if (productList[0]?.order_quantity_maximum >= quantity) {
     if (100 >= quantity) {
-      if (productList[0]?.inventory_level <= quantity) {
+      if (productList[0]?.inventory_level < quantity) {
         alert(
           `Low stock for ${productList[0]?.name}. Available Stock ${productList[0]?.inventory_level}`
         );
       } else {
-        handleSubmit();
+        if (from === "inc") {
+          setCount(count + 1);
+        } else {
+          handleSubmit();
+        }
       }
     } else {
       alert(
@@ -125,7 +129,7 @@ function ProductDetailpage({ params }) {
         })
         .catch(function (error) {
           console.log("error,err", error);
-          //  alert(error.title);
+          alert("Product does not have sufficient stock");
           //setIsError(true);
         });
     } else {
@@ -154,7 +158,7 @@ function ProductDetailpage({ params }) {
         })
         .catch(function (error) {
           console.log("error,err", error);
-          // alert(error.title);
+          alert("Product does not have sufficient stock");
           //setIsError(true);
         });
     }
@@ -318,7 +322,7 @@ function ProductDetailpage({ params }) {
                     </div>
                   </span>
                   <button
-                    onClick={() => checkStock(count)}
+                    onClick={() => checkStock(count, "add")}
                     className="flex ml-auto text-white bg-blue-900 border-0 py-2 px-6 rounded"
                   >
                     Add to Cart
