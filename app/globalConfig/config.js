@@ -1,10 +1,10 @@
 module.exports = {
-  clientId: "i4wh5ifnhhrf2rvip5ipecmo704r03r",
-  storeHash: "3bkf9t8exj",
-  accessToken: "jkywdw9bj1gq0mb69lbyrrdmjon0m32",
+  clientId: "mrgha2sbv47g3ukryzknzfnw3g62m39 ",
+  storeHash: "0xtqxm6i86",
+  accessToken: "w3l5vxyu02pzjtye8kod85xggujddm ",
   responseType: "json",
   headers: {
-    "X-Auth-Token": "jkywdw9bj1gq0mb69lbyrrdmjon0m32",
+    "X-Auth-Token": "w3l5vxyu02pzjtye8kod85xggujddm ",
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers":
@@ -13,5 +13,4 @@ module.exports = {
   },
 
   apiVersion: "v3",
-  allProductData: [],
 };

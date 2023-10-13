@@ -1,16 +1,13 @@
 "use client"; // This is a client component
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useSearchParams, useRouter } from "next/navigation";
-import Link from "next/link";
-import OrderDetail from "../orderDetail/page";
+import { useRouter } from "next/navigation";
+import ListingImage from "../orderlist_image/page";
 
 function OrderPage() {
   const [orderList, setOrderList] = useState([]);
   const router = useRouter();
-  // const [customerId, setCustomerId] = useState("");
   console.log("orderList", orderList);
-  // console.log("customerId", customerId);
   const getOrderDetails = async () => {
     const request = {
       id: sessionStorage.getItem("customer_Number"),
@@ -47,11 +44,10 @@ function OrderPage() {
           </tr>
         </thead>
         <tbody>
-          {/* <Link href={`/orderDetail`}> */}
           {orderList.map((item, index) => (
             <tr key={item.id} className="border-b">
               <td className="border px-4 py-2 text-center">
-                <OrderDetail />
+                <ListingImage order_id={item.id} />
               </td>
               <td className="border px-4 py-2 text-left">
                 <b>Name:</b>
@@ -70,7 +66,6 @@ function OrderPage() {
               </td>
               <td className="border px-4 py-2 text-center">{item.status}</td>
               <td className="border px-4 py-2 text-center">
-                {/* <Link href={`/orderDetail`}> */}
                 <button
                   type="button"
                   onClick={() => goToDetailPage(item.id)}
@@ -78,12 +73,9 @@ function OrderPage() {
                 >
                   View Order Detail
                 </button>
-                {/* </Link> */}
               </td>
-              {/* </Link> */}
             </tr>
           ))}
-          {/* </Link> */}
         </tbody>
       </table>
     </div>
