@@ -9,13 +9,16 @@ function OrderPage() {
   const router = useRouter();
   console.log("orderList", orderList);
   const getOrderDetails = async () => {
+    let customerId = +sessionStorage.getItem("customer_Number");
+    console.log("customerId", customerId);
     const request = {
       id: sessionStorage.getItem("customer_Number"),
     };
     console.log("request", request);
     const result = await axios.post("api/order", request);
+    console.log("products", result.data);
     const newproducts = result.data.filter(
-      (item) => item.customer_id === Number(request.id)
+      (item) => item.customer_id === customerId
     );
     console.log("newproducts", newproducts);
 

@@ -103,7 +103,7 @@ const OrderSummaryList = ({
     let header = {
       Authorization: `PAT ${PAToken}`,
       Accept: "application/vnd.bc.v1+json",
-      "X-Auth-Token": "jkywdw9bj1gq0mb69lbyrrdmjon0m32",
+      "X-Auth-Token": "w3l5vxyu02pzjtye8kod85xggujddm",
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers":
