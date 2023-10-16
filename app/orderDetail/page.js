@@ -7,9 +7,11 @@ function OrderDetail() {
   const [order, setOrder] = useState([]);
   const [billing_address, setBilling_address] = useState([]);
   const [shipping_address, setShipping_address] = useState([]);
+
   console.log("order", order);
   console.log("billing_address", billing_address);
   console.log("shipping_address", shipping_address);
+
   const getOrder = async () => {
     const request = {
       id: sessionStorage.getItem("orderid"),

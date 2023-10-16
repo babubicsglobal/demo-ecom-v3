@@ -2,11 +2,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-function Image({ product_id }) {
+export default function Image({ product_id }) {
   const [image, setImage] = useState([]);
   const getOrder = async () => {
     const req_img = {
-      id: product_id ?? "",
+      id: product_id,
     };
     const image = await axios.post("api/orderimage", req_img);
     setImage(image.data.data.images[0].url_standard);
@@ -22,5 +22,3 @@ function Image({ product_id }) {
     </div>
   );
 }
-
-export default Image;
