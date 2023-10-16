@@ -1,8 +1,11 @@
 "use client"; // This is a client component
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-const ImageData = ({ product_id }) => {
+
+export default function ImageData({ product_id }) {
   const [image, setImage] = useState([]);
+
+  console.log("product_id", product_id);
   useEffect(() => {
     getOrder();
   }, []);
@@ -15,7 +18,6 @@ const ImageData = ({ product_id }) => {
     console.log("Requestimage", req_img);
     const image = await axios.post("api/orderimage", req_img);
     setImage(image.data.data.images[0].url_standard);
-    console.log("image", image);
   };
 
   return (
@@ -23,6 +25,4 @@ const ImageData = ({ product_id }) => {
       <img src={image} className="w-28 h-30 object-contain mr-4" />
     </div>
   );
-};
-
-export default ImageData;
+}
