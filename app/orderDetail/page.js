@@ -1,7 +1,7 @@
 "use client"; // This is a client component
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-//import ImageData from "../orderdetail_image/page";
+import ImageData from "../../components/orderDetail/imageViewList";
 
 function OrderDetail() {
   const [order, setOrder] = useState([]);
@@ -52,6 +52,7 @@ function OrderDetail() {
             {order.map((item) => (
               <>
                 <tr key={item.id} className="border-b">
+                  <ImageData product_id={item.product_id} />
                   {/* <ImageData product_id={item.product_id} /> */}
                   <h1>
                     <b>Product Name: </b> {item.name}
