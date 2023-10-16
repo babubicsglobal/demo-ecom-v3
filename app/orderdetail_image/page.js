@@ -4,14 +4,15 @@ import axios from "axios";
 
 export default function ImageData({ product_id }) {
   const [image, setImage] = useState([]);
+  const productId = product_id ?? 0;
 
   useEffect(() => {
-    getOrder();
+    getOrder(productId);
   }, []);
 
-  const getOrder = async () => {
+  const getOrder = async (productId) => {
     const req_img = {
-      id: product_id.toString(),
+      id: productId.toString(),
     };
 
     console.log("Requestimage", req_img);
