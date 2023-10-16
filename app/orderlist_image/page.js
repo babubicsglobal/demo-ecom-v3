@@ -28,7 +28,7 @@ function ListingImage({ order_id }) {
             <h1>
               <b>Product Name:</b> {item.name}
             </h1>
-            <ImageData product_id={item.product_id} />
+            {/* <ImageData product_id={item.product_id} /> */}
           </>
         ))}
       </div>
