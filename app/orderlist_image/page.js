@@ -17,9 +17,11 @@ function ListingImage({ order_id }) {
     const order_detail = result.data;
     setOrder(order_detail);
   };
+
   useEffect(() => {
     getOrder();
   }, []);
+
   if (order)
     return (
       <div className="container mx-auto p-4">

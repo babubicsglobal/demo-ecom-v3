@@ -1,8 +1,7 @@
 "use client"; // This is a client component
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
-export default function ImageData({ product_id }) {
+const ImageData = ({ product_id }) => {
   const [image, setImage] = useState([]);
   const productId = product_id ?? 0;
 
@@ -26,4 +25,6 @@ export default function ImageData({ product_id }) {
       <img src={image} className="w-28 h-30 object-contain mr-4" />
     </div>
   );
-}
+};
+
+export default ImageData;
