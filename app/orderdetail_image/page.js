@@ -4,11 +4,13 @@ import axios from "axios";
 
 export default function Image({ product_id }) {
   const [image, setImage] = useState([]);
-  const productId = product_id ?? "0";
+
   const getOrder = async () => {
     const req_img = {
-      id: productId,
+      id: product_id.toString(),
     };
+
+    console.log("Requestimage", req_img);
     const image = await axios.post("api/orderimage", req_img);
     setImage(image.data.data.images[0].url_standard);
     console.log("image", image);
