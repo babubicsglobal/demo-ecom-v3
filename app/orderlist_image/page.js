@@ -20,19 +20,19 @@ function ListingImage({ order_id }) {
   useEffect(() => {
     getOrder();
   }, []);
-
-  return (
-    <div className="container mx-auto p-4">
-      {order.map((item) => (
-        <>
-          <h1>
-            <b>Product Name:</b> {item.name}
-          </h1>
-          <Image product_id={item.product_id} />
-        </>
-      ))}
-    </div>
-  );
+  if (order)
+    return (
+      <div className="container mx-auto p-4">
+        {order.map((item) => (
+          <>
+            <h1>
+              <b>Product Name:</b> {item.name}
+            </h1>
+            <Image product_id={item.product_id} />
+          </>
+        ))}
+      </div>
+    );
 }
 
 export default ListingImage;

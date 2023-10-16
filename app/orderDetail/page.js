@@ -44,41 +44,42 @@ function OrderDetail() {
     getOrder();
   }, []);
 
-  return (
-    <div className="flex flex-wrap -mx-1 lg:-mx-4">
-      <div className="container mx-auto">
-        <div className="grid grid-flow-row-dense grid-cols-1 grid-rows-1">
-          {order.map((item) => (
-            <>
-              <tr key={item.id} className="border-b">
-                <Image product_id={item.product_id} />
-                <h1>
-                  <b>Product Name: </b> {item.name}
-                </h1>
-                <h1>
-                  <b>Total: </b> {parseFloat(item.base_total).toFixed(2)}
-                </h1>
-                <h1>
-                  <b>Type: </b> {item.type}
-                </h1>
-              </tr>
-            </>
-          ))}
+  if (order)
+    return (
+      <div className="flex flex-wrap -mx-1 lg:-mx-4">
+        <div className="container mx-auto">
+          <div className="grid grid-flow-row-dense grid-cols-1 grid-rows-1">
+            {order.map((item) => (
+              <>
+                <tr key={item.id} className="border-b">
+                  <Image product_id={item.product_id} />
+                  <h1>
+                    <b>Product Name: </b> {item.name}
+                  </h1>
+                  <h1>
+                    <b>Total: </b> {parseFloat(item.base_total).toFixed(2)}
+                  </h1>
+                  <h1>
+                    <b>Type: </b> {item.type}
+                  </h1>
+                </tr>
+              </>
+            ))}
+          </div>
+          <h1>
+            <b>Address: </b>
+            {billing_address?.billing_address?.street_1},
+            {billing_address?.billing_address?.city},
+            {billing_address?.billing_address?.state},
+            {billing_address?.billing_address?.country}, zip:
+            {billing_address?.billing_address?.zip}.
+          </h1>
+          <br></br>
+          <b>Shipping Address:</b>
+          {shipping_address.state}.
         </div>
-        <h1>
-          <b>Address: </b>
-          {billing_address?.billing_address?.street_1},
-          {billing_address?.billing_address?.city},
-          {billing_address?.billing_address?.state},
-          {billing_address?.billing_address?.country}, zip:
-          {billing_address?.billing_address?.zip}.
-        </h1>
-        <br></br>
-        <b>Shipping Address:</b>
-        {shipping_address.state}.
       </div>
-    </div>
-  );
+    );
 }
 
 export default OrderDetail;
