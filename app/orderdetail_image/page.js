@@ -4,7 +4,7 @@ import axios from "axios";
 const ImageData = ({ product_id }) => {
   const [image, setImage] = useState([]);
   useEffect(() => {
-    getOrder();
+    // getOrder();
   }, []);
 
   const getOrder = async () => {

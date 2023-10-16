@@ -19,7 +19,7 @@ function ListingImage({ order_id }) {
   };
 
   useEffect(() => {
-    //getOrder();
+    getOrder();
   }, []);
 
   if (order.length > 0)
