@@ -2,8 +2,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function Image({ product_id }) {
+export default function ImageData({ product_id }) {
   const [image, setImage] = useState([]);
+
+  useEffect(() => {
+    getOrder();
+  }, []);
 
   const getOrder = async () => {
     const req_img = {
@@ -15,9 +19,6 @@ export default function Image({ product_id }) {
     setImage(image.data.data.images[0].url_standard);
     console.log("image", image);
   };
-  useEffect(() => {
-    getOrder();
-  }, []);
 
   return (
     <div className="container mx-auto p-4">

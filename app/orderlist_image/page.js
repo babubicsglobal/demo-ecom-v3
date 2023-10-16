@@ -1,7 +1,7 @@
 "use client"; // This is a client component
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Image from "../orderdetail_image/page";
+import ImageData from "../orderdetail_image/page";
 
 function ListingImage({ order_id }) {
   const [order, setOrder] = useState([]);
@@ -28,7 +28,7 @@ function ListingImage({ order_id }) {
             <h1>
               <b>Product Name:</b> {item.name}
             </h1>
-            <Image product_id={item.product_id} />
+            <ImageData product_id={item.product_id} />
           </>
         ))}
       </div>
