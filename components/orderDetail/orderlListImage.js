@@ -1,9 +1,11 @@
 "use client"; // This is a client component
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import ImageData from "../../components/orderDetail/imageViewList";
 
-function ListingImage({ order_id }) {
+const orderListImage = ({ order_id }) => {
   const [order, setOrder] = useState([]);
 
   console.log("order", order);
@@ -35,6 +37,6 @@ function ListingImage({ order_id }) {
         ))}
       </div>
     );
-}
+};
 
-export default ListingImage;
+export default orderListImage;

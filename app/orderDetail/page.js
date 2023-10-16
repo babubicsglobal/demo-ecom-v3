@@ -53,7 +53,7 @@ function OrderDetail() {
               <>
                 <tr key={item.id} className="border-b">
                   <ImageData product_id={item.product_id} />
-                  {/* <ImageData product_id={item.product_id} /> */}
+
                   <h1>
                     <b>Product Name: </b> {item.name}
                   </h1>

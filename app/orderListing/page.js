@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import ListingImage from "../orderlist_image/page";
+import ListingImage from "../../components/orderDetail/orderlListImage";
 
 function OrderPage() {
   const [orderList, setOrderList] = useState([]);
