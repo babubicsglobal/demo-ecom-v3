@@ -8,7 +8,7 @@ export async function POST(request) {
     accessToken: GlobalConfig.accessToken,
     responseType: GlobalConfig.responseType,
     headers: GlobalConfig.headers,
-    apiVersion: 'v2',
+    apiVersion: "v2",
   });
   console.log(request, "req value");
   const res = await request.json();
