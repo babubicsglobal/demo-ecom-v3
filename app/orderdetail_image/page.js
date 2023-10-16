@@ -3,15 +3,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 const ImageData = ({ product_id }) => {
   const [image, setImage] = useState([]);
-  const productId = product_id ?? 0;
-
   useEffect(() => {
-    getOrder(productId);
+    getOrder();
   }, []);
 
-  const getOrder = async (productId) => {
+  const getOrder = async () => {
     const req_img = {
-      id: "86", //productId.toString(),
+      id: product_id.toString(),
     };
 
     console.log("Requestimage", req_img);
