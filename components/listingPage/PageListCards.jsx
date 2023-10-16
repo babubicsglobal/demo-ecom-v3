@@ -33,10 +33,9 @@ const PageListCards = ({ bigCommerceData }) => {
                         src={item?.commerceItem?.images[0]?.url_standard}
                       />
 
-                      {calculateDiscount(
-                        item?.commerceItem?.price,
+                      {
                         item?.commerceItem?.sale_price
-                      ) > 0 ? (
+                       > 0 ? (
                         <div className="absolute top-2 left-2 p-2 bg-red-500 text-white rounded-full text-xs">
                           {calculateDiscount(
                             item?.commerceItem?.price,
@@ -55,26 +54,39 @@ const PageListCards = ({ bigCommerceData }) => {
                           className="no-underline text-blue-900 font-bold"
                           href=""
                         >
-                          {/* {item?.commerceProduct?.masterData?.staged?.name?.en} */}
+
                           {item?.commerceItem?.name}
                         </a>
                       </h1>
-                      <div className="price-counter mb-3">
-                        <span>
-                          <span className="a-price-symbol">₹&nbsp;</span>
+                      {
+                        item?.commerceItem?.sale_price > 0 ?
+                          <div className="price-counter mb-3">
+                            <span>
+                              <span className="a-price-symbol">₹&nbsp;</span>
 
-                          {item?.commerceItem?.sale_price}
-                        </span>
-                        <span>
-                          {" "}
-                          {<span className="a-price-symbol">M.R.P&nbsp;</span>}
-                          {
-                            <span className="line-through">
-                              {item?.commerceItem?.price}
+                              {item?.commerceItem?.sale_price}
                             </span>
-                          }
-                        </span>
-                      </div>
+                            <span>
+
+                              <span className="a-price-symbol">M.R.P&nbsp;</span>
+
+                              <span className="line-through">
+                                {item?.commerceItem?.price}
+                              </span>
+
+                            </span>
+                          </div> : <span>
+
+                            <span className="a-price-symbol">M.R.P&nbsp;</span>
+
+                            <span className="a-price-symbol">₹&nbsp;</span>
+
+                            {item?.commerceItem?.price}
+                          </span>
+
+
+                      }
+
                     </header>
 
                     {/* <footer className="flex items-center justify-between leading-none p-2 md:p-4">

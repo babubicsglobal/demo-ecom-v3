@@ -75,14 +75,16 @@ function ProductDetailpage({ params }) {
         : true
     );
     setproductList(filteredProduct);
-    let value = calculateDiscount(
-      filteredProduct[0]?.price ?? 0,
-      filteredProduct[0]?.sale_price ?? 0
-    );
+    if (filteredProduct[0]?.sale_price > 0) {
+      let value = calculateDiscount(
+        filteredProduct[0]?.price ?? 0,
+        filteredProduct[0]?.sale_price ?? 0
+      );
 
-    if (!isNaN(value)) {
-      console.log("value", value);
-      setDiscount(value);
+      if (!isNaN(value)) {
+        console.log("value", value);
+        setDiscount(value);
+      }
     }
 
     setRating(
@@ -100,7 +102,10 @@ function ProductDetailpage({ params }) {
         quantity: count,
         product_id: productList[0]?.id,
         variant_id: productList[0]?.variants[0]?.id,
-        list_price: productList[0]?.sale_price,
+        list_price:
+          productList[0]?.sale_price > 0
+            ? productList[0]?.sale_price
+            : productList[0]?.price,
         name: productList[0]?.name,
         option_selections: [
           {
@@ -325,6 +330,45 @@ function ProductDetailpage({ params }) {
                 <div className="flex">
                   <span className="title-font font-medium text-2xl text-gray-900">
                     <div className="price-counter">
+                      {productList[0]?.sale_price > 0 ? (
+                        <div>
+                          <span className="a-price-symbol">₹&nbsp;</span>
+                          <span className="text-5xl">
+                            {productList[0]?.sale_price}
+                          </span>
+                          <span>
+                            <span className="a-price-symbol">
+                              &nbsp;&nbsp;M.R.P&nbsp;
+                            </span>
+
+                            <span className="line-through">
+                              {productList[0]?.price}
+                            </span>
+                          </span>
+                        </div>
+                      ) : (
+                        <div>
+                          <span className="a-price-symbol">₹&nbsp;</span>
+                          <span className="text-5xl">
+                            {productList[0]?.price}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </span>
+                  <button
+                    onClick={() => checkStock(count, "add")}
+                    className="flex ml-auto text-white bg-blue-900 border-0 py-2 px-6 rounded"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex">
+                <span className="title-font font-medium text-2xl text-gray-900">
+                  {productList[0]?.sale_price > 0 ? (
+                    <div className="price-counter">
                       <div>
                         <span className="a-price-symbol">₹&nbsp;</span>
                         <span className="text-5xl">
@@ -341,35 +385,12 @@ function ProductDetailpage({ params }) {
                         </span>
                       </div>
                     </div>
-                  </span>
-                  <button
-                    onClick={() => checkStock(count, "add")}
-                    className="flex ml-auto text-white bg-blue-900 border-0 py-2 px-6 rounded"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="flex">
-                <span className="title-font font-medium text-2xl text-gray-900">
-                  <div className="price-counter">
+                  ) : (
                     <div>
                       <span className="a-price-symbol">₹&nbsp;</span>
-                      <span className="text-5xl">
-                        {productList[0]?.sale_price}
-                      </span>
-                      <span>
-                        <span className="a-price-symbol">
-                          &nbsp;&nbsp;M.R.P&nbsp;
-                        </span>
-
-                        <span className="line-through">
-                          {productList[0]?.price}
-                        </span>
-                      </span>
+                      <span className="text-5xl">{productList[0]?.price}</span>
                     </div>
-                  </div>
+                  )}
                 </span>
               </div>
             )}

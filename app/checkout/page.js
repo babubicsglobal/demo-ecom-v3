@@ -25,7 +25,7 @@ const CheckoutPage = () => {
   const [selectedState, setSelectedState] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
 
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
@@ -136,9 +136,9 @@ const CheckoutPage = () => {
       initTE({ Collapse }); // Call the initTE function with the Collapse component
     };
     initTE();
+    getCustomerDetails(+sessionStorage.getItem("customer_Number"));
     setSessionID(+sessionStorage.getItem("customer_Number"));
     getCartDetails(sessionStorage.getItem("cart_id"));
-    getCustomerDetails(+sessionStorage.getItem("customer_Number"));
   }, []);
 
   const handleCloseModal = () => {
