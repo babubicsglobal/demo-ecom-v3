@@ -1,10 +1,10 @@
 "use client"; // This is a client component
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-const ImageData = () => {
+const ImageData = ({ product_id }) => {
   const [image, setImage] = useState([]);
   useEffect(() => {
-    // getOrder();
+    getOrder();
   }, []);
 
   const getOrder = async () => {
