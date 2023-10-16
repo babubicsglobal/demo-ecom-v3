@@ -21,6 +21,24 @@
   border-end-end-radius: 39%;
   border-start-start-radius: 39%;
 }
+.hero_carousel_image {
+  width: 100%;
+  background-size: cover;
+  background-position: 50%;
+  height: 30vw;
+}
+
+.carousel_wrapper {
+  @apply w-full overflow-hidden;
+}
+.carousel_wrapper .slick-dots {
+  @apply bottom-[25px];
+}
+
+.carousel_wrapper .slick-dots li button:before {
+  @apply text-sm text-[#58ab5f];
+}
+
 
 body {
   color: rgb(var(--foreground-rgb));

@@ -10,7 +10,7 @@ const PageListCards = ({ bigCommerceData }) => {
   var bigCommerceProducts = useMemo(() => bigCommerceData, [bigCommerceData]);
 
   return (
-    <div className="card-box">
+    <div className="card-box px-10">
       {bigCommerceProducts?.length != 0 && (
         <div className="bicommerce-box">
           <div className="block text-4xl font-extrabold dark:text-white">
