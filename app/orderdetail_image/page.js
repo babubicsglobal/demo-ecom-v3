@@ -12,7 +12,7 @@ export default function ImageData({ product_id }) {
 
   const getOrder = async (productId) => {
     const req_img = {
-      id: productId.toString(),
+      id: "86", //productId.toString(),
     };
 
     console.log("Requestimage", req_img);
