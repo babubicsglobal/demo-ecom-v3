@@ -1,7 +1,7 @@
 "use client"; // This is a client component
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Image from "../orderdatail_image/page";
+import Image from "../orderdetail_image/page";
 function ListingImage({order_id}) {
   const [order, setOrder] = useState([]);
 
