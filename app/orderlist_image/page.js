@@ -22,7 +22,7 @@ function ListingImage({ order_id }) {
     getOrder();
   }, []);
 
-  if (order)
+  if (order.length > 0)
     return (
       <div className="container mx-auto p-4">
         {order.map((item) => (

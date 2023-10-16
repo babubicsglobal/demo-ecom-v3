@@ -44,7 +44,7 @@ function OrderDetail() {
     getOrder();
   }, []);
 
-  if (order)
+  if (order.length > 0)
     return (
       <div className="flex flex-wrap -mx-1 lg:-mx-4">
         <div className="container mx-auto">
