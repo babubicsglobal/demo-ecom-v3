@@ -151,7 +151,7 @@ const Register = () => {
         <div className="w-5/6 lg:w-1/2 mx-auto bg-white rounded shadow">
           <div className="py-4 px-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white my-6">
-              Register for a free account
+              Register
             </h1>
             <form
               className="space-y-4 md:space-y-6"

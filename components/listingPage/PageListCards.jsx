@@ -68,7 +68,7 @@ const PageListCards = ({ bigCommerceData }) => {
                             </span>
                             <span>
 
-                              <span className="a-price-symbol">M.R.P&nbsp;</span>
+                              <span className="a-price-symbol"> M.R.P&nbsp;</span>
 
                               <span className="line-through">
                                 {item?.commerceItem?.price}

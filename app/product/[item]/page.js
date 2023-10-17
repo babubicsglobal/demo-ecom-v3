@@ -210,127 +210,165 @@ function ProductDetailpage({ params }) {
   //console.log("rating", rating);
 
   console.log("customerID", sessionItem);
-
-  return (
-    <section className="text-gray-700 body-font overflow-hidden bg-white">
-      <div className="container px-5 py-24 mx-auto">
-        <div className="lg:w-4/5 mx-auto flex flex-wrap">
-          <img
-            alt="ecommerce"
-            className="lg:w-1/2 w-full object-cover object-center rounded border border-gray-200"
-            src={productList[0]?.images[0]?.url_standard}
-          />
-          <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-            <h2 className="text-sm title-font text-gray-500 tracking-widest">
-              {productList[0]?.name}
-            </h2>
-            <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
-              {productList[0]?.name}
-            </h1>
-            {discount > 0 ? (
-              <h2 className="text-base title-font text-red-500 tracking-widest pb-2">
-                {discount}
-                {"% OFF"}
+  if (productList[0])
+    return (
+      <section className="text-gray-700 body-font overflow-hidden bg-white">
+        <div className="container px-5 py-24 mx-auto">
+          <div className="lg:w-4/5 mx-auto flex flex-wrap">
+            <img
+              alt="ecommerce"
+              className="lg:w-1/2 w-full object-cover object-center rounded border border-gray-200"
+              src={productList[0]?.images[0]?.url_standard}
+            />
+            <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
+              <h2 className="text-sm title-font text-gray-500 tracking-widest">
+                {productList[0]?.name}
               </h2>
-            ) : (
-              <div></div>
-            )}
-            <div className="flex mb-4">
-              <span className="flex items-center">
-                <div
-                  style={{
-                    direction: "ltr",
-                    fontFamily: "sans-serif",
-                    touchAction: "none",
-                  }}
-                >
-                  <Rating
-                    initialValue={rating}
-                    allowHover="false"
-                    allowFraction="true"
-                    readonly="true"
-                  />
-                </div>
-                <span className="text-gray-600 ml-3">
-                  {productList[0]?.reviews_count} Reviews
-                </span>
-              </span>
-            </div>
-            <div
-              className="leading-relaxed text-base"
-              dangerouslySetInnerHTML={{
-                __html: productList[0]?.description,
-              }}
-            ></div>
-
-            {productList[0]?.inventory_level == 0 ? (
-              <p className="text-red-600 text-lg py-2">Out of Stock</p>
-            ) : productList[0]?.inventory_level <=
-              productList[0]?.inventory_warning_level ? (
-              <p className="text-red-600 text-sm py-2">
-                Only {productList[0]?.inventory_level} left in stock.. Order
-                Soon!
-              </p>
-            ) : (
-              <div></div>
-            )}
-
-            {productList[0]?.inventory_level > 0 ? (
-              <div>
-                <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
-                  <div className="flex ml-6 items-center">
-                    <span className="mr-3">Size</span>
-                    <div className="relative">
-                      <select className="rounded border appearance-none border-gray-400 py-2 focus:outline-none focus:border-red-500 text-base pl-3 pr-10">
-                        {productList[0]?.variants.map((item, index) => (
-                          <option key={index}>
-                            {item.option_values[0]?.label}
-                          </option>
-                        ))}
-                      </select>
-                      <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
-                        <svg
-                          fill="none"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          className="w-4 h-4"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M6 9l6 6 6-6"></path>
-                        </svg>
-                      </span>
-                    </div>
+              <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
+                {productList[0]?.name}
+              </h1>
+              {discount > 0 ? (
+                <h2 className="text-base title-font text-red-500 tracking-widest pb-2">
+                  {discount}
+                  {"% OFF"}
+                </h2>
+              ) : (
+                <div></div>
+              )}
+              <div className="flex mb-4">
+                <span className="flex items-center">
+                  <div
+                    style={{
+                      direction: "ltr",
+                      fontFamily: "sans-serif",
+                      touchAction: "none",
+                    }}
+                  >
+                    <Rating
+                      initialValue={rating}
+                      allowHover="false"
+                      allowFraction="true"
+                      readonly="true"
+                    />
                   </div>
-                  <div className="flex ml-6 items-center">
-                    <span className="mr-3">Quantity</span>
-                    <div className="relative">
-                      <div className="flex">
-                        <button
-                          onClick={dec}
-                          className="inc-btn px-3 rounded border appearance-none border-gray-400 py-1"
-                        >
-                          -
-                        </button>
+                  <span className="text-gray-600 ml-3">
+                    {productList[0]?.reviews_count} Reviews
+                  </span>
+                </span>
+              </div>
+              <div
+                className="leading-relaxed text-base"
+                dangerouslySetInnerHTML={{
+                  __html: productList[0]?.description,
+                }}
+              ></div>
 
-                        <CounterDisplay count={count} />
+              {productList[0]?.inventory_level == 0 ? (
+                <p className="text-red-600 text-lg py-2">Out of Stock</p>
+              ) : productList[0]?.inventory_level <=
+                productList[0]?.inventory_warning_level ? (
+                <p className="text-red-600 text-sm py-2">
+                  Only {productList[0]?.inventory_level} left in stock.. Order
+                  Soon!
+                </p>
+              ) : (
+                <div></div>
+              )}
 
-                        <button
-                          onClick={inc}
-                          className="dec-btn px-3 rounded border appearance-none border-gray-400 py-1"
-                        >
-                          +
-                        </button>
+              {productList[0]?.inventory_level > 0 ? (
+                <div>
+                  <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
+                    <div className="flex ml-6 items-center">
+                      <span className="mr-3">Size</span>
+                      <div className="relative">
+                        <select className="rounded border appearance-none border-gray-400 py-2 focus:outline-none focus:border-red-500 text-base pl-3 pr-10">
+                          {productList[0]?.variants.map((item, index) => (
+                            <option key={index}>
+                              {item.option_values[0]?.label}
+                            </option>
+                          ))}
+                        </select>
+                        <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
+                          <svg
+                            fill="none"
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            className="w-4 h-4"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M6 9l6 6 6-6"></path>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex ml-6 items-center">
+                      <span className="mr-3">Quantity</span>
+                      <div className="relative">
+                        <div className="flex">
+                          <button
+                            onClick={dec}
+                            className="inc-btn px-3 rounded border appearance-none border-gray-400 py-1"
+                          >
+                            -
+                          </button>
+
+                          <CounterDisplay count={count} />
+
+                          <button
+                            onClick={inc}
+                            className="dec-btn px-3 rounded border appearance-none border-gray-400 py-1"
+                          >
+                            +
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
+                  <div className="flex">
+                    <span className="title-font font-medium text-2xl text-gray-900">
+                      <div className="price-counter">
+                        {productList[0]?.sale_price > 0 ? (
+                          <div>
+                            <span className="a-price-symbol">₹&nbsp;</span>
+                            <span className="text-5xl">
+                              {productList[0]?.sale_price}
+                            </span>
+                            <span>
+                              <span className="a-price-symbol">
+                                &nbsp;&nbsp;M.R.P&nbsp;
+                              </span>
+
+                              <span className="line-through">
+                                {productList[0]?.price}
+                              </span>
+                            </span>
+                          </div>
+                        ) : (
+                          <div>
+                            <span className="a-price-symbol">₹&nbsp;</span>
+                            <span className="text-5xl">
+                              {productList[0]?.price}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </span>
+                    <button
+                      onClick={() => checkStock(count, "add")}
+                      className="flex ml-auto text-white bg-blue-900 border-0 py-2 px-6 rounded"
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              ) : (
                 <div className="flex">
                   <span className="title-font font-medium text-2xl text-gray-900">
-                    <div className="price-counter">
-                      {productList[0]?.sale_price > 0 ? (
+                    {productList[0]?.sale_price > 0 ? (
+                      <div className="price-counter">
                         <div>
                           <span className="a-price-symbol">₹&nbsp;</span>
                           <span className="text-5xl">
@@ -346,59 +384,23 @@ function ProductDetailpage({ params }) {
                             </span>
                           </span>
                         </div>
-                      ) : (
-                        <div>
-                          <span className="a-price-symbol">₹&nbsp;</span>
-                          <span className="text-5xl">
-                            {productList[0]?.price}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </span>
-                  <button
-                    onClick={() => checkStock(count, "add")}
-                    className="flex ml-auto text-white bg-blue-900 border-0 py-2 px-6 rounded"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="flex">
-                <span className="title-font font-medium text-2xl text-gray-900">
-                  {productList[0]?.sale_price > 0 ? (
-                    <div className="price-counter">
+                      </div>
+                    ) : (
                       <div>
                         <span className="a-price-symbol">₹&nbsp;</span>
                         <span className="text-5xl">
-                          {productList[0]?.sale_price}
-                        </span>
-                        <span>
-                          <span className="a-price-symbol">
-                            &nbsp;&nbsp;M.R.P&nbsp;
-                          </span>
-
-                          <span className="line-through">
-                            {productList[0]?.price}
-                          </span>
+                          {productList[0]?.price}
                         </span>
                       </div>
-                    </div>
-                  ) : (
-                    <div>
-                      <span className="a-price-symbol">₹&nbsp;</span>
-                      <span className="text-5xl">{productList[0]?.price}</span>
-                    </div>
-                  )}
-                </span>
-              </div>
-            )}
+                    )}
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-  );
+      </section>
+    );
 }
 
 export default ProductDetailpage;
