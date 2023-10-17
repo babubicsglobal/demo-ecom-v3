@@ -82,8 +82,16 @@ const SearchProductsPage = ({ params }) => {
     } else if (option.value === "avgcustomerreview") {
       const items = mainData.sort(
         (a, b) =>
-          parseFloat(b.commerceItem.reviews_count) -
-          parseFloat(a.commerceItem.reviews_count)
+          parseFloat(
+            b.commerceItem.reviews_count > 0
+              ? b.commerceItem.reviews_rating_sum / b.commerceItem.reviews_count
+              : 0
+          ) -
+          parseFloat(
+            a.commerceItem.reviews_count > 0
+              ? a.commerceItem.reviews_rating_sum / a.commerceItem.reviews_count
+              : 0
+          )
       );
 
       setCfulFilterData(items);

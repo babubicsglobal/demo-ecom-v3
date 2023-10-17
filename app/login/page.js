@@ -20,9 +20,22 @@ function Login() {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      .email("Must be a valid email")
+      .matches(
+        /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
+        "Invalid email address"
+      )
       .required("Email is required"),
-    password: Yup.string().required("Password is required"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(
+        7,
+        "Passwords must be at least 7 characters and contain both alphabetic and numeric characters."
+      )
+      .max(12, "Password cannot exceed more than 12 characters")
+      .matches(
+        "^(?=.*[a-zA-Z])(?=.*[0-9])",
+        "Passwords must be at least 7 characters and contain both alphabetic and numeric characters."
+      ),
   });
 
   const formOptions = { resolver: yupResolver(validationSchema) };

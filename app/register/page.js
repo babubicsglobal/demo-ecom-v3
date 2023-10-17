@@ -93,7 +93,12 @@ const Register = () => {
 
   // form validation rules
   const validationSchema = Yup.object().shape({
-    email: Yup.string().required("Email address is required"),
+    email: Yup.string()
+      .matches(
+        /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
+        "Invalid email address"
+      )
+      .required("Email is required"),
     password: Yup.string()
       .required("Password is required")
       .min(
@@ -120,9 +125,9 @@ const Register = () => {
     city: Yup.string().required("city is required"),
     state_or_province: Yup.string().required("State/Province is required"),
     postal_code: Yup.string().test(
-      "is-numeric-between-5-and-9-digits",
-      "Postal code must be a numeric value between 5 and 9 digits",
-      (value) => /^[0-9]{5,9}$/.test(value)
+      "is-numeric-between-4-and-9-digits",
+      "Postal code must be a numeric value between 4 and 9 digits",
+      (value) => /^[0-9]{4,9}$/.test(value)
     ),
     country_code: Yup.string().required("Country is required"),
   });
@@ -151,7 +156,7 @@ const Register = () => {
         <div className="w-5/6 lg:w-1/2 mx-auto bg-white rounded shadow">
           <div className="py-4 px-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white my-6">
-              Register
+              Create an account
             </h1>
             <form
               className="space-y-4 md:space-y-6"

@@ -86,10 +86,13 @@ function ProductDetailpage({ params }) {
         setDiscount(value);
       }
     }
+    if (filteredProduct[0]?.reviews_count > 0) {
+      setRating(
+        filteredProduct[0]?.reviews_rating_sum /
+          filteredProduct[0]?.reviews_count
+      );
+    }
 
-    setRating(
-      filteredProduct[0]?.reviews_rating_sum / filteredProduct[0]?.reviews_count
-    );
     return filteredProduct;
   };
 
