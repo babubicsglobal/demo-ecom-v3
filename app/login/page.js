@@ -90,7 +90,6 @@ function Login() {
             </h1>
             <form
               className="space-y-4 md:space-y-6"
-              action="#"
               onSubmit={handleSubmit(onSubmit)}
               autoComplete="off"
             >

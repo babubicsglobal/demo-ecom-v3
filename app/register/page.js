@@ -119,7 +119,11 @@ const Register = () => {
     address1: Yup.string().required("address is required"),
     city: Yup.string().required("city is required"),
     state_or_province: Yup.string().required("State/Province is required"),
-    postal_code: Yup.string().required("Postal code is required"),
+    postal_code: Yup.string().test(
+      "is-numeric-between-5-and-9-digits",
+      "Postal code must be a numeric value between 5 and 9 digits",
+      (value) => /^[0-9]{5,9}$/.test(value)
+    ),
     country_code: Yup.string().required("Country is required"),
   });
   const formOptions = { resolver: yupResolver(validationSchema) };

@@ -7,7 +7,6 @@ import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { CustomerAPI } from "./../api/customer/getCustomerAPI";
 import OrderSummaryCartList from "./../../components/orderSummary/CartList";
 import { useSession, signOut } from "next-auth/react";
 import { Countries, States } from "../utils/countryData";

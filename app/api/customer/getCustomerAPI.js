@@ -1,12 +1,12 @@
 import axios from "axios";
 
 export function CustomerAPI(config, callback, errorcallback) {
-  const URL = "http://localhost:3000/api/allCustomers";
+  const URL = "../api/allCustomers";
   axios
     .get(URL, config)
     .then((res) => {
       //do something
-      console.log("Benefit banner api working");
+      console.log("Benefit banner api working", res);
       if (callback != null) {
         callback(res);
       }
