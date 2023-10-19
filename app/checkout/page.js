@@ -68,7 +68,7 @@ const CheckoutPage = () => {
 
   // form validation rules
   const validationSchema = Yup.object().shape({
-    email: Yup.string()
+    email: Yup.string().required("Email is required")
       .matches(
         /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
         "Invalid email address"
@@ -76,6 +76,11 @@ const CheckoutPage = () => {
       .required("Email is required"),
     first_name: Yup.string().required("first name is required"),
     last_name: Yup.string().required("last name is required"),
+    phonenumber: Yup.string().required("Phone number is required").test(
+      "is-numeric-between-4-and-10-digits",
+      "Phone number must be a numeric value between 4 and 10 digits",
+      (value) => /^[0-9]{4,10}$/.test(value)
+    ),
     address1: Yup.string().required("address is required"),
     city: Yup.string().required("city is required"),
     state_or_province: Yup.string().required("State/Province is required"),
@@ -426,6 +431,7 @@ const CheckoutPage = () => {
                               htmlFor="FormField_7_input"
                             >
                               Phone Number
+                              <span className="require-star">*</span>
                             </label>
                             <input
                               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -434,7 +440,11 @@ const CheckoutPage = () => {
                               type="text"
                               placeholder="Phone Number"
                             />
+                             <div className="invalid-feedback">
+                              {errors.last_name?.message}
+                            </div>
                           </div>
+                          
                           <div className="w-1/2 ml-1">
                             <label
                               className="block text-grey-darker text-sm mb-2"

@@ -32,6 +32,7 @@ const SearchProductsPage = ({ params }) => {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(options[0]); // Initialize with the default option
   const [isOpen, setIsOpen] = useState(false);
+  const [title, setTitle] = useState("Loading data...");
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -103,6 +104,7 @@ const SearchProductsPage = ({ params }) => {
   };
 
   const handleFilterChange = (newFilter) => {
+    setTitle("Loading data...")
     setFilter(newFilter);
 
     const request = {
@@ -117,8 +119,10 @@ const SearchProductsPage = ({ params }) => {
 
   const handleSearch = (query) => {
     console.log("query", query);
+    setIsOpen(false)
     if (!query) {
       setPopoverOpen(false);
+      
     }
     const request = {
       searchKey: query,
@@ -134,9 +138,13 @@ const SearchProductsPage = ({ params }) => {
         console.log("res filter", response);
         setCommerceData(response.data.data);
         getCommerceProduct(response.data.data);
+        if(response.data.data.length === 0){
+        setTitle('No search data found')
+        }
       })
       .catch(function (error) {
         console.log(error);
+        setTitle('No search data found')
       });
   };
 
@@ -196,9 +204,11 @@ const SearchProductsPage = ({ params }) => {
           handleFilterChange={handleFilterChange}
           isPopoverOpen={isPopoverOpen}
         />
-      </div>
-      <PageListCards bigCommerceData={cfulFilterData}></PageListCards>
-    </div>
+      </div>{
+      cfulFilterData.length > 0 ? <PageListCards bigCommerceData={cfulFilterData}></PageListCards>
+       : <div className="text-center mt-8 text-gray-500">
+       {title}
+     </div>}</div>
   );
 };
 

@@ -19,7 +19,7 @@ function Login() {
   // const Valid_REGX = commerceData.is_valid === false;
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string()
+    email: Yup.string().required("Email is required")
       .matches(
         /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
         "Invalid email address"

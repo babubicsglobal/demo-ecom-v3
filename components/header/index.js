@@ -11,6 +11,7 @@ function Header() {
 
   const logoutHandler = () => {
     signOut({ redirect: false }).then(() => {
+      sessionStorage.removeItem("cart_id");
       router.push("/"); // Redirect to the dashboard page after signing out
     });
   };

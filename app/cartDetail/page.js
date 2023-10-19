@@ -136,7 +136,8 @@ const CartPage = () => {
 
         if (cartItems.length === 1) {
           sessionStorage.removeItem("cart_id");
-          router.push("/home");
+          setCartItems([])
+         // router.push("/home");
         } else {
           getCartDetails(cartId);
         }
@@ -192,7 +193,8 @@ const CartPage = () => {
         alert("Cart Item deleted successfully!");
         console.log("Success");
         sessionStorage.removeItem("cart_id");
-        router.push("/home");
+        setCartItems([])
+       // router.push("/home");
       })
       .catch(function (error) {
         console.log(error);
