@@ -120,10 +120,7 @@ const SearchProductsPage = ({ params }) => {
   const handleSearch = (query) => {
     console.log("query", query);
     setIsOpen(false)
-    if (!query) {
-      setPopoverOpen(false);
-      
-    }
+    setPopoverOpen(false);
     const request = {
       searchKey: query,
       from: "search",

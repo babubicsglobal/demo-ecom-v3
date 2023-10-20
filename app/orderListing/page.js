@@ -21,9 +21,11 @@ function OrderPage() {
     const newproducts = result.data.filter(
       (item) => item.customer_id === customerId
     );
-    console.log("newproducts", newproducts);
+    const products = newproducts.sort(
+      (a,b) => Number(b.id) - Number(a.id)
+    );
     setLoading(true);
-    setOrderList(newproducts);
+    setOrderList(products);
   };
 
   const goToDetailPage = (id) => {

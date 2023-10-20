@@ -366,6 +366,7 @@ const Register = () => {
                     value={selectedCountry}
                     {...register("country_code")}
                     onChange={handleCountryChange}
+                    autoComplete="off"
                     className="mt-1 block w-full py-3 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   >
                     <option value="">Select</option>
@@ -395,6 +396,7 @@ const Register = () => {
                     value={selectedState}
                     {...register("state_or_province")}
                     onChange={handleStateChange}
+                    autoComplete="off"
                     className="mt-1 block w-full py-3 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   >
                     <option value="">Select</option>
