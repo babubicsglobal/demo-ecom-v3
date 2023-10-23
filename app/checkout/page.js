@@ -10,7 +10,9 @@ import * as Yup from "yup";
 import OrderSummaryCartList from "./../../components/orderSummary/CartList";
 import { useSession, signOut } from "next-auth/react";
 import { Countries, States } from "../utils/countryData";
-import OrderSuccessModal from "../../components/orderSuccessModal/OrderSuccessModal";
+import OrderSuccessModal from "../../components/orderSuccessModal/orderSuccessModal";
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 const CheckoutPage = () => {
   const [isError, setIsError] = useState(false);
@@ -20,15 +22,32 @@ const CheckoutPage = () => {
   const [cartItem, setCartItem] = useState([]);
   const { data } = useSession();
   const [shippingAddress, setShippingAddress] = useState({});
-  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("US");
   const [selectedState, setSelectedState] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
   const [isChecked, setIsChecked] = useState(true);
+  const [phonenumber , setphonenumber] = useState("")
+  
+  const [stateOptions, setStateOptions] = useState(States["US"]);
 
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
   };
+
+  const handlePhoneSelect = (phone, country) => {
+    console.log(`Selected phone: ${phone}`);
+    console.log(`Selected country: ${country.countryCode}`);
+    setphonenumber(phone);
+    setSelectedCountry(country.countryCode.toUpperCase())
+    if(States[country.countryCode.toUpperCase()]){
+      setSelectedState(States[selectedCountry])
+    }else{
+      setSelectedState([])
+    }
+  };
+
+
 
   const onSubmit = async (data) => {
     console.log("subkmt");
@@ -36,10 +55,10 @@ const CheckoutPage = () => {
       email: data.email,
       city: data.city,
       company: data.companyname,
-      country_iso2: data.country_code,
+      country_iso2: selectedCountry.toUpperCase(),
       first_name: data.first_name,
       last_name: data.last_name,
-      phone: data.phonenumber,
+      phone: phonenumber,
       zip: data.postal_code,
       state: data.state_or_province,
       street_1: data.address1,
@@ -55,7 +74,7 @@ const CheckoutPage = () => {
     </option>
   ));
 
-  const stateOptions = selectedCountry ? States[selectedCountry] : [];
+  
 
   const handleCountryChange = (e) => {
     setSelectedCountry(e.target.value);
@@ -76,20 +95,21 @@ const CheckoutPage = () => {
       .required("Email is required"),
     first_name: Yup.string().required("first name is required"),
     last_name: Yup.string().required("last name is required"),
-    phonenumber: Yup.string().required("Phone number is required").test(
+    /*phonenumber: Yup.string().required("Phone number is required").test(
       "is-numeric-between-4-and-10-digits",
       "Phone number must be a numeric value between 4 and 10 digits",
-      (value) => /^[0-9]{4,10}$/.test(value)
-    ),
+      (value) => /^[0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]*$/.test(value)
+    ),*/
     address1: Yup.string().required("address is required"),
     city: Yup.string().required("city is required"),
     state_or_province: Yup.string().required("State/Province is required"),
+ 
     postal_code: Yup.string().test(
       "is-numeric-between-4-and-9-digits",
       "Postal code must be a numeric value between 4 and 9 digits",
       (value) => /^[0-9]{4,9}$/.test(value)
     ),
-    country_code: Yup.string().required("Country is required"),
+    //country_code: Yup.string().required("Country is required"),
   });
   const formOptions = {
     resolver: yupResolver(validationSchema),
@@ -98,6 +118,8 @@ const CheckoutPage = () => {
   const {
     register,
     handleSubmit,
+    setValue,
+   
     watch,
     formState,
     reset,
@@ -156,7 +178,7 @@ const CheckoutPage = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    router.push("/home");
+    router.push("/orderListing");
   };
 
   const handlePlaceOrder = async (shippingAddress) => {
@@ -219,6 +241,9 @@ const CheckoutPage = () => {
           console.log("Order Response", response.data);
           // createToken(response.data.id);
           sessionStorage.removeItem("cart_id");
+         // router.push("/orderConfirmation")
+         // <OrderConfirmation orderId={response.data.id} orderTotal={""} shippingAddress={shippingAddress} />
+          
           setIsModalOpen(true);
         })
         .catch(function (error) {
@@ -298,15 +323,13 @@ const CheckoutPage = () => {
                   </div>
                 </div>
                 <div className="border-b-2 border-neutral-200 bg-white dark:border-neutral-600 dark:bg-neutral-800">
-                  <h2 className="mb-0" id="headingTwo">
+                  <h2 className="mb-0" id="headingOne">
                     <button
                       className="group relative flex w-full items-center rounded-t-[15px] border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800 dark:text-white "
                       type="button"
                       data-te-collapse-init
-                      data-te-collapse-collapsed
-                      data-te-target="#collapseTwo"
-                      aria-expanded="true"
-                      aria-controls="collapseTwo"
+                      data-te-target="#collapseOne"
+                      aria-controls="collapseOne"
                     >
                       <div className="checkout-view-header py-2">
                         <h2 className="mb-0 mt-0 text-2xl font-bold leading-tight text-primary">
@@ -332,10 +355,9 @@ const CheckoutPage = () => {
                     </button>
                   </h2>
                   <div
-                    id="collapseTwo"
-                    className="!visible hidden"
+                    id="collapseOne"
                     data-te-collapse-item
-                    aria-labelledby="headingTwo"
+                    aria-labelledby="headingOne"
                     data-te-parent="#accordionExample"
                   >
                     <div className="px-5 py-4">
@@ -424,24 +446,29 @@ const CheckoutPage = () => {
                             />
                           </div>
                         </div>
+                        
                         <div className="flex mb-4">
                           <div className="w-1/2 mr-1">
                             <label
                               className="block text-grey-darker text-sm mb-2"
-                              htmlFor="FormField_7_input"
+                              htmlFor="phonenumber"
                             >
                               Phone Number
                               <span className="require-star">*</span>
                             </label>
-                            <input
-                              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                              id="FormField_7_input"
-                              {...register("phonenumber")}
-                              type="text"
-                              placeholder="Phone Number"
-                            />
+                            <PhoneInput 
+                           className="w-full ml-1"
+                           id="phonenumber"
+                           name="phonenumber"
+                          
+                      country={'us'} 
+          value={phonenumber} 
+          {...register("phonenumber")}
+          onChange={(phone ,country) => setValue('phonenumber',  handlePhoneSelect(phone,country))}
+        /> 
+                           
                              <div className="invalid-feedback">
-                              {errors.last_name?.message}
+                              {errors.phonenumber?.message}
                             </div>
                           </div>
                           
@@ -501,31 +528,8 @@ const CheckoutPage = () => {
                           </div>
                         </div>
                         <div className="flex mb-4">
+                         
                           <div className="w-1/2 mr-1">
-                            <label
-                              className="block text-grey-darker text-sm mb-2"
-                              htmlFor="FormField_11_input"
-                            >
-                              Country<span className="require-star">*</span>
-                            </label>
-
-                            <select
-                              id="country"
-                              name="country"
-                              value={selectedCountry}
-                              {...register("country_code")}
-                              onChange={handleCountryChange}
-                              autoComplete="off"
-                              className="mt-1 block w-full py-3 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            >
-                              <option value="">Select</option>
-                              {countryOptions}
-                            </select>
-                            <div className="invalid-feedback">
-                              {errors.country_code?.message}
-                            </div>
-                          </div>
-                          <div className="w-1/2 ml-1">
                             <label
                               className="block text-grey-darker text-sm mb-2"
                               htmlFor="FormField_12_input"
@@ -538,23 +542,23 @@ const CheckoutPage = () => {
                               name="state"
                               value={selectedState}
                               {...register("state_or_province")}
-                              onChange={handleStateChange}
+                              onChange={(e) => setValue('state_or_province',    e.target.value , { shouldValidate: true },setSelectedState(e.target.value))} // Using setValue
+       
+                              //onChange={handleStateChange}
                               autoComplete="off"
-                              className="mt-1 block w-full py-3 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                              className="mt-1 block w-full py-2.5 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             >
                               <option value="">Select</option>
-                              {stateOptions.map((state) => (
+                              { stateOptions.map((state) => (
                                 <option key={state} value={state}>
                                   {state}
                                 </option>
-                              ))}
+                              ))  }
                             </select>
                             <div className="invalid-feedback">
-                              {errors.state_or_province?.message}
+                           {errors.state_or_province?.message}
                             </div>
                           </div>
-                        </div>
-                        <div className="flex mb-4">
                           <div className="w-1/2 ml-1">
                             <label
                               className="block text-grey-darker text-sm mb-2"
@@ -574,6 +578,7 @@ const CheckoutPage = () => {
                             </div>
                           </div>
                         </div>
+                          
                         <div className="flex mb-4">
                           <div className="flex items-center">
                             <input
@@ -633,7 +638,7 @@ const CheckoutPage = () => {
                     data-te-collapse-collapsed
                     data-te-target="#collapseFour"
                     aria-expanded="false"
-                    aria-controls="collapseTwo"
+                    aria-controls="collapse"
                   >
                     <div className="checkout-view-header py-2">
                       <h2 className="mb-0 mt-0 text-2xl font-bold leading-tight text-primary">
@@ -679,15 +684,15 @@ const CheckoutPage = () => {
                 </div>
               </div> */}
                 <div className=" border-b-2 border-neutral-200 bg-white dark:border-neutral-600 dark:bg-neutral-800">
-                  <h2 className="accordion-header mb-0" id="headingThree">
+                  <h2 className="accordion-header mb-0" id="headingTwo">
                     <button
                       className="group relative flex w-full items-center rounded-t-[15px] border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800 dark:text-white "
                       type="button"
                       data-te-collapse-init
                       data-te-collapse-collapsed
-                      data-te-target="#collapseThree"
+                      data-te-target="#collapseTwo"
                       aria-expanded="true"
-                      aria-controls="collapseThree"
+                      aria-controls="collapseTwo"
                     >
                       <div className="checkout-view-header py-2">
                         <h2 className="mb-0 mt-0 text-2xl font-bold leading-tight text-primary">
@@ -713,10 +718,10 @@ const CheckoutPage = () => {
                     </button>
                   </h2>
                   <div
-                    id="collapseThree"
+                    id="collapseTwo"
                     className="!visible hidden"
                     data-te-collapse-item
-                    aria-labelledby="headingThree"
+                    aria-labelledby="headingTwo"
                     data-te-parent="#accordionExample"
                   >
                     <div className="px-5 py-4">
@@ -842,8 +847,8 @@ const CheckoutPage = () => {
           </div>
         </div>
       </section>
+       <OrderSuccessModal isOpen={isModalOpen} onClose={handleCloseModal} />
 
-      <OrderSuccessModal isOpen={isModalOpen} onClose={handleCloseModal} />
     </div>
   );
 };

@@ -3,7 +3,8 @@ import React, { useMemo } from "react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import OrderSuccessModal from "../../components/orderSuccessModal/OrderSuccessModal";
+import OrderSuccessModal from "../orderSuccessModal/orderSuccessModal";
+import Global from "../../app/globalConfig/config"
 import axios from "axios";
 const OrderSummaryList = ({
   cartListData,
@@ -115,7 +116,7 @@ const OrderSummaryList = ({
 
     try {
       const res = await fetch(
-        `https://payments.bigcommerce.com/stores/3bkf9t8exj/payments`,
+        `https://payments.bigcommerce.com/stores/0xtqxm6i86/payments`,
 
         {
           method: "POST",
@@ -196,6 +197,7 @@ const OrderSummaryList = ({
     document.getElementById("total").textContent = (
       shippingCharge + total
     ).toFixed(2);
+   
   };
 
   return (

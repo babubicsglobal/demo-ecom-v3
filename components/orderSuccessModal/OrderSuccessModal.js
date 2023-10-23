@@ -25,17 +25,17 @@ const OrderSuccessModal = ({ isOpen, onClose }) => {
             </svg>
           </div>
           <div class="flex justify-center items-center py-2">
-            <h2 className="text-xl font-semibold mb-2 ">Order Successful!</h2>
+            <h2 className="text-xl font-semibold mb-2 ">Order placed, thank  you!</h2>
           </div>
           <p className="text-sm text-gray-700 px-10">
-            Thank you for your order.
+            Confimation will be sent to your email.
           </p>
           <div class="flex justify-center items-center py-1">
             <button
               onClick={onClose}
               className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200"
             >
-              Ok
+              Go to your Order
             </button>
           </div>
         </div>

@@ -1,5 +1,5 @@
 module.exports = {
-  clientId: "mrgha2sbv47g3ukryzknzfnw3g62m39 ",
+  clientId: "i4wh5ifnhhrf2rvip5ipecmo704r03r",
   storeHash: "0xtqxm6i86",
   accessToken: "w3l5vxyu02pzjtye8kod85xggujddm",
   responseType: "json",
@@ -13,4 +13,6 @@ module.exports = {
   },
 
   apiVersion: "v3",
+  allProductData: [],
+ 
 };
