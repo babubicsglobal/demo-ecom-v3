@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import OrderSuccessModal from "../orderSuccessModal/orderSuccessModal";
+import OrderSuccessModal from "./../../components/orderSuccessModal/orderSuccessModal";
 import Global from "../../app/globalConfig/config"
 import axios from "axios";
 const OrderSummaryList = ({
