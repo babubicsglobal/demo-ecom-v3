@@ -10,7 +10,7 @@ import * as Yup from "yup";
 import OrderSummaryCartList from "./../../components/orderSummary/CartList";
 import { useSession, signOut } from "next-auth/react";
 import { Countries, States } from "../utils/countryData";
-import OrderSuccessModal from "./../../components/orderSuccessModal/orderSuccessModal";
+import OrderSuccessModal from "./../../components/orderSuccessPopup/orderSuccessPopup";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 
