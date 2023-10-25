@@ -53,8 +53,8 @@ function Login() {
       setCommerceData(result.data);
       sessionStorage.setItem("customer_Number", result.data.customer_id);
       console.log("User Validation Response ", result.data.is_valid);
-
-      callNextAuth(data.email, result.data.customer_id);
+     let role = result.data.customer_id === 4 ? "admin" : "user"
+      callNextAuth(data.email, result.data.customer_id, role);
       router.push("/home");
     } else {
       // console.log("Failier");
@@ -62,10 +62,11 @@ function Login() {
     }
     reset();
   };
-  const callNextAuth = async (email, customer_id) => {
+  const callNextAuth = async (email,customer_id, role) => {
     await signIn("credentials", {
       email: email,
       customerId: customer_id,
+      role:role,
       redirect: false,
       callbackUrl: "/",
     });

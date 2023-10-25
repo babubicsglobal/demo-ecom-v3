@@ -13,6 +13,7 @@ const handler = NextAuth({
           email: credentials.email,
           customerId: credentials.customerId,
           channel_id: 1,
+          role:credentials.role
         };
 
         return user;
@@ -42,14 +43,17 @@ const handler = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.accessToken = user.jwt;
+        token.role = user.role
       }
 
       return token;
     },
     async session({ session, token, user }) {
+     
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
       session.user.accessTokenExpires = token.accessTokenExpires;
+      session.user.role = token.role
 
       return session;
     },
